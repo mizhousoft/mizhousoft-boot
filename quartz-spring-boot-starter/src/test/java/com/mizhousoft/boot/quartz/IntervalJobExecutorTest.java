@@ -1,0 +1,47 @@
+package com.mizhousoft.boot.quartz;
+
+import static org.junit.Assert.fail;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+/**
+ * IntervalJobExecutor Test
+ *
+ * @version
+ */
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest(classes = QuartzApplication.class)
+public class IntervalJobExecutorTest
+{
+	@Autowired
+	private QuartzScheduler quartzSchedulerService;
+
+	@Test
+	public void scheduleIntervalJob() throws InterruptedException
+	{
+		try
+		{
+			Student student = new Student(1, "刘德华");
+
+			Map<String, Object> dataMap = new HashMap<>(1);
+			dataMap.put("student", student);
+
+			JobContext jobContext = JobContextBuilder.newJobContext(HelloJobExecution.class).withJobIdentity("test").build();
+			quartzSchedulerService.scheduleIntervalJob(3, TimeUnit.SECONDS, dataMap, jobContext);
+		}
+		catch (QuartzException e)
+		{
+			fail(e.getMessage());
+		}
+
+		TimeUnit.SECONDS.sleep(13);
+	}
+}
