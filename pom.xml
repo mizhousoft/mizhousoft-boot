@@ -27,7 +27,6 @@
 		<module>crypto-spring-boot-starter</module>
 		<module>restclient-spring-boot-starter</module>
 		<module>driver-spring-boot-starter</module>
-		<module>ehcache-spring-boot-starter</module>
 		<module>quartz-spring-boot-starter</module>
 		<module>push-spring-boot-starter</module>
 		<module>sms-spring-boot-starter</module>
