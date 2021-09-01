@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.mizhousoft.boot</groupId>
 		<artifactId>mizhousoft-boot</artifactId>
-		<version>1.2.0-SNAPSHOT</version>
+		<version>1.2.0</version>
 	</parent>
 
 	<artifactId>push-spring-boot-starter</artifactId>
