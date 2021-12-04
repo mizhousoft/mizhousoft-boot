@@ -8,9 +8,9 @@
 		<version>1.4.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>shiro-spring-boot-starter</artifactId>
+	<artifactId>authentication-spring-boot-starter</artifactId>
 	<packaging>jar</packaging>
-	<name>shiro-spring-boot-starter</name>
+	<name>authentication-spring-boot-starter</name>
 
 	<dependencies>
 		<dependency>

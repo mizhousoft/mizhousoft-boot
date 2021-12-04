@@ -30,7 +30,7 @@
 		<module>quartz-spring-boot-starter</module>
 		<module>push-spring-boot-starter</module>
 		<module>sms-spring-boot-starter</module>
-		<module>shiro-spring-boot-starter</module>
+		<module>authentication-spring-boot-starter</module>
 	</modules>
 
 </project>
