@@ -12,13 +12,6 @@ import com.mizhousoft.boot.shiro.AccountDetails;
 public interface TwoFactorAuthenticationService
 {
 	/**
-	 * 是否启用服务
-	 * 
-	 * @return
-	 */
-	boolean isEnable();
-
-	/**
 	 * 决策是否内部认证通过
 	 * 
 	 * @param accountDetails

@@ -1,13 +1,14 @@
 package com.mizhousoft.boot.shiro.service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 请求路径服务
  *
  * @version
  */
-public interface RequestPathService
+public interface ApplicationRequestPathService
 {
 	/**
 	 * 查询仅仅要认证的请求路径
@@ -31,9 +32,9 @@ public interface RequestPathService
 	List<String> queryLoginAuditRequestPaths();
 
 	/**
-	 * 查询不更新访问时间的请求路径
+	 * 获取不更新访问时间的请求路径
 	 * 
 	 * @return
 	 */
-	List<String> queryNonUpdateAccessTimeRequestPaths();
+	Map<String, String> queryNonUpdateAccessTimeRequestPaths();
 }
