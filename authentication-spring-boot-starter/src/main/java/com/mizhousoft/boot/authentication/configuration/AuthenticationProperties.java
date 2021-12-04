@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  * @version
  */
 @Component
-@ConfigurationProperties(prefix = "authentication.")
+@ConfigurationProperties(prefix = "authentication")
 public class AuthenticationProperties
 {
 	// 校验请求HOST
