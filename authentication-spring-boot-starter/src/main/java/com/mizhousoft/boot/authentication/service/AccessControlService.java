@@ -12,8 +12,9 @@ public interface AccessControlService
 	/**
 	 * 根据请求路径获取角色
 	 * 
+	 * @param serviceId
 	 * @param requestPath
 	 * @return
 	 */
-	Set<String> getRolesByPath(String requestPath);
+	Set<String> getRolesByPath(String serviceId, String requestPath);
 }

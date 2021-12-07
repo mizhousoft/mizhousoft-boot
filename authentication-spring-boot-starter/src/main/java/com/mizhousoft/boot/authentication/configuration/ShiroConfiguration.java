@@ -17,6 +17,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.mizhousoft.boot.authentication.AuthenticationFacadeService;
 import com.mizhousoft.boot.authentication.filter.FirstLoginCheckFilter;
 import com.mizhousoft.boot.authentication.filter.PasswordExpiredCheckFilter;
 import com.mizhousoft.boot.authentication.filter.SecurityContextPersistenceFilter;
@@ -28,9 +29,7 @@ import com.mizhousoft.boot.authentication.filter.authc.SessionAuthenticationFilt
 import com.mizhousoft.boot.authentication.filter.authz.AccessAuthorizationFilter;
 import com.mizhousoft.boot.authentication.mgt.DefaultWebSecurityManager;
 import com.mizhousoft.boot.authentication.realm.AuthenticationRealm;
-import com.mizhousoft.boot.authentication.service.AccessControlService;
 import com.mizhousoft.boot.authentication.service.AccountAuthcService;
-import com.mizhousoft.boot.authentication.service.ApplicationRequestPathService;
 import com.mizhousoft.boot.authentication.session.SecureSessionDAO;
 import com.mizhousoft.boot.authentication.session.SecureSessionFactory;
 import com.mizhousoft.boot.authentication.session.SecureWebSessionManager;
@@ -53,7 +52,7 @@ public class ShiroConfiguration
 	private AuthenticationProperties authenticationProperties;
 
 	@Autowired
-	private ApplicationRequestPathService applicationRequestPathService;
+	private AuthenticationFacadeService authenticationFacadeService;
 
 	@Bean
 	public SecureSessionDAO getSecureSessionDAO()
@@ -109,7 +108,7 @@ public class ShiroConfiguration
 	}
 
 	@Bean
-	public DefaultFilterChainManager getDefaultFilterChainManager(AccessControlService accessControlService)
+	public DefaultFilterChainManager getDefaultFilterChainManager()
 	{
 		DefaultFilterChainManager filterChain = new DefaultFilterChainManager();
 
@@ -131,7 +130,7 @@ public class ShiroConfiguration
 		AnonymousFilter anonFilter = new AnonymousFilter();
 
 		AccessAuthorizationFilter accessAuthorizationFilter = new AccessAuthorizationFilter();
-		accessAuthorizationFilter.setAccessControlService(accessControlService);
+		accessAuthorizationFilter.setAuthenticationFacadeService(authenticationFacadeService);
 		accessAuthorizationFilter.setLoginUrl(LOGIN_URL);
 		accessAuthorizationFilter.setUnauthorizedUrl(UNAUTHORIZED_URL);
 
@@ -172,7 +171,7 @@ public class ShiroConfiguration
 
 	public DefaultFilterChainManager buildFilterChainManager(DefaultFilterChainManager filterChain)
 	{
-		List<String> authzPaths = applicationRequestPathService.queryAuthzRequestPaths();
+		List<String> authzPaths = authenticationFacadeService.queryAuthzRequestPaths();
 		for (String authzPath : authzPaths)
 		{
 			filterChain.addToChain(authzPath, "authc");
@@ -188,7 +187,7 @@ public class ShiroConfiguration
 			}
 		}
 
-		List<String> authcPaths = applicationRequestPathService.queryAuthcRequestPaths();
+		List<String> authcPaths = authenticationFacadeService.queryAuthcRequestPaths();
 		for (String authcPath : authcPaths)
 		{
 			filterChain.addToChain(authcPath, "authc");
@@ -203,7 +202,7 @@ public class ShiroConfiguration
 			}
 		}
 
-		List<String> onlyAuthcPaths = applicationRequestPathService.queryLoginAuditRequestPaths();
+		List<String> onlyAuthcPaths = authenticationFacadeService.queryLoginAuditRequestPaths();
 		for (String onlyAuthcPath : onlyAuthcPaths)
 		{
 			filterChain.addToChain(onlyAuthcPath, "authc");
@@ -238,7 +237,7 @@ public class ShiroConfiguration
 		SecurityFrameworkFilter filter = new SecurityFrameworkFilter();
 		registrationBean.setFilter(filter);
 
-		Map<String, String> requestPathMap = applicationRequestPathService.queryNonUpdateAccessTimeRequestPaths();
+		Map<String, String> requestPathMap = authenticationFacadeService.queryNonUpdateAccessTimeRequestPaths();
 		filter.setNonUpdateAccessTimeURIMap(requestPathMap);
 
 		List<String> urlPatterns = new ArrayList<String>(1);

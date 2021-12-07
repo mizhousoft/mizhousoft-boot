@@ -14,7 +14,7 @@ import org.apache.shiro.web.util.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mizhousoft.boot.authentication.service.AccessControlService;
+import com.mizhousoft.boot.authentication.AuthenticationFacadeService;
 import com.mizhousoft.boot.authentication.util.BMCWebUtils;
 import com.mizhousoft.boot.authentication.util.ResponseBuilder;
 
@@ -27,8 +27,7 @@ public class AccessAuthorizationFilter extends RolesAuthorizationFilter
 {
 	private static final Logger LOG = LoggerFactory.getLogger(AccessAuthorizationFilter.class);
 
-	// 访问控制服务
-	private AccessControlService accessControlService;
+	private AuthenticationFacadeService authenticationFacadeService;
 
 	/**
 	 * 是否允许访问
@@ -45,7 +44,7 @@ public class AccessAuthorizationFilter extends RolesAuthorizationFilter
 
 		try
 		{
-			Set<String> roles = accessControlService.getRolesByPath(requestPath);
+			Set<String> roles = authenticationFacadeService.getRolesByPath(requestPath);
 			if (CollectionUtils.isEmpty(roles))
 			{
 				LOG.error("Request path is not in any role, request path is " + requestPath + ".");
@@ -101,12 +100,12 @@ public class AccessAuthorizationFilter extends RolesAuthorizationFilter
 	}
 
 	/**
-	 * 设置accessControlService
+	 * 设置authenticationFacadeService
 	 * 
-	 * @param accessControlService
+	 * @param authenticationFacadeService
 	 */
-	public void setAccessControlService(AccessControlService accessControlService)
+	public void setAuthenticationFacadeService(AuthenticationFacadeService authenticationFacadeService)
 	{
-		this.accessControlService = accessControlService;
+		this.authenticationFacadeService = authenticationFacadeService;
 	}
 }

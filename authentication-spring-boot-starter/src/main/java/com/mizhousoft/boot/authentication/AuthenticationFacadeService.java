@@ -1,14 +1,15 @@
-package com.mizhousoft.boot.authentication.service;
+package com.mizhousoft.boot.authentication;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
- * 请求路径服务
+ * 认证服务
  *
  * @version
  */
-public interface ApplicationRequestPathService
+public interface AuthenticationFacadeService
 {
 	/**
 	 * 查询仅仅要认证的请求路径
@@ -37,4 +38,12 @@ public interface ApplicationRequestPathService
 	 * @return
 	 */
 	Map<String, String> queryNonUpdateAccessTimeRequestPaths();
+
+	/**
+	 * 根据请求路径获取角色
+	 * 
+	 * @param requestPath
+	 * @return
+	 */
+	Set<String> getRolesByPath(String requestPath);
 }

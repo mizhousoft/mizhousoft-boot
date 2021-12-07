@@ -12,28 +12,32 @@ public interface RequestPathService
 	/**
 	 * 查询仅仅要认证的请求路径
 	 * 
+	 * @param serviceId
 	 * @return
 	 */
-	List<String> queryAuthcRequestPaths();
+	List<String> queryAuthcRequestPaths(String serviceId);
 
 	/**
 	 * 查询要认证和鉴权的请求路径
 	 * 
+	 * @param serviceId
 	 * @return
 	 */
-	List<String> queryAuthzRequestPaths();
+	List<String> queryAuthzRequestPaths(String serviceId);
 
 	/**
 	 * 获取登录审计请求路径
 	 * 
+	 * @param serviceId
 	 * @return
 	 */
-	List<String> queryLoginAuditRequestPaths();
+	List<String> queryLoginAuditRequestPaths(String serviceId);
 
 	/**
 	 * 查询不更新访问时间的请求路径
 	 * 
+	 * @param serviceId
 	 * @return
 	 */
-	List<String> queryNonUpdateAccessTimeRequestPaths();
+	List<String> queryNonUpdateAccessTimeRequestPaths(String serviceId);
 }
