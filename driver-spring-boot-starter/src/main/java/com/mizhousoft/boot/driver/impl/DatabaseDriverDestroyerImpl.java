@@ -62,7 +62,7 @@ public class DatabaseDriverDestroyerImpl implements DatabaseDriverDestroyer
 
 		try
 		{
-			Class<?> cls = Class.forName("com.mysql.jdbc.AbandonedConnectionCleanupThread");
+			Class<?> cls = Class.forName("com.mysql.cj.jdbc.AbandonedConnectionCleanupThread");
 			if (null != cls)
 			{
 				Method mth = cls.getMethod("checkedShutdown");
