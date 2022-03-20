@@ -17,6 +17,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.mizhousoft.boot.authentication.AccountSessionService;
 import com.mizhousoft.boot.authentication.AuthenticationFacadeService;
 import com.mizhousoft.boot.authentication.filter.FirstLoginCheckFilter;
 import com.mizhousoft.boot.authentication.filter.PasswordExpiredCheckFilter;
@@ -27,6 +28,7 @@ import com.mizhousoft.boot.authentication.filter.authc.AccountPasswordAuthentica
 import com.mizhousoft.boot.authentication.filter.authc.CustLogoutFilter;
 import com.mizhousoft.boot.authentication.filter.authc.SessionAuthenticationFilter;
 import com.mizhousoft.boot.authentication.filter.authz.AccessAuthorizationFilter;
+import com.mizhousoft.boot.authentication.impl.AccountSessionServiceImpl;
 import com.mizhousoft.boot.authentication.mgt.DefaultWebSecurityManager;
 import com.mizhousoft.boot.authentication.realm.AuthenticationRealm;
 import com.mizhousoft.boot.authentication.service.AccountAuthcService;
@@ -88,10 +90,19 @@ public class ShiroConfiguration
 	}
 
 	@Bean
-	public AuthenticationRealm getAuthenticationRealm(AccountAuthcService accountAuthcService)
+	public AccountSessionService getAccountSessionService(SecureSessionDAO sessionDAO)
 	{
-		AuthenticationRealm authenticationRealm = new AuthenticationRealm();
-		authenticationRealm.setAccountAuthcService(accountAuthcService);
+		AccountSessionServiceImpl accountSessionService = new AccountSessionServiceImpl(sessionDAO);
+
+		return accountSessionService;
+	}
+
+	@Bean
+	public AuthenticationRealm getAuthenticationRealm(AccountAuthcService accountAuthcService, AccountSessionService accountSessionService)
+	{
+		AuthenticationRealm authenticationRealm = new AuthenticationRealm(accountAuthcService, accountSessionService,
+		        authenticationProperties);
+
 		return authenticationRealm;
 	}
 

@@ -20,8 +20,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mizhousoft.boot.authentication.AccountDetails;
+import com.mizhousoft.boot.authentication.AccountSessionService;
 import com.mizhousoft.boot.authentication.GrantedAuthority;
 import com.mizhousoft.boot.authentication.authc.UnionAuthenticationToken;
+import com.mizhousoft.boot.authentication.configuration.AuthenticationProperties;
 import com.mizhousoft.boot.authentication.exception.BadCredentialsException;
 import com.mizhousoft.boot.authentication.service.AccountAuthcService;
 
@@ -36,6 +38,28 @@ public class AuthenticationRealm extends AuthorizingRealm
 
 	// 帐号服务
 	private AccountAuthcService accountAuthcService;
+
+	// 帐号Sessionf服务
+	private AccountSessionService accountSessionService;
+
+	// 配置
+	private AuthenticationProperties authenticationProperties;
+
+	/**
+	 * 构造函数
+	 *
+	 * @param accountAuthcService
+	 * @param accountSessionService
+	 * @param authenticationProperties
+	 */
+	public AuthenticationRealm(AccountAuthcService accountAuthcService, AccountSessionService accountSessionService,
+	        AuthenticationProperties authenticationProperties)
+	{
+		super();
+		this.accountAuthcService = accountAuthcService;
+		this.accountSessionService = accountSessionService;
+		this.authenticationProperties = authenticationProperties;
+	}
 
 	/**
 	 * 获取授权信息
@@ -94,6 +118,11 @@ public class AuthenticationRealm extends AuthorizingRealm
 				throw new BadCredentialsException("Authentication token is wrong.");
 			}
 
+			if (authenticationProperties.isSessionMutex())
+			{
+				accountSessionService.logoffAccount(accountDetails.getAccountId());
+			}
+
 			SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(accountDetails, null, null, getName());
 			return authenticationInfo;
 		}
@@ -144,15 +173,5 @@ public class AuthenticationRealm extends AuthorizingRealm
 	protected void assertCredentialsMatch(AuthenticationToken token, AuthenticationInfo info) throws AuthenticationException
 	{
 
-	}
-
-	/**
-	 * 设置accountAuthcService
-	 * 
-	 * @param accountAuthcService
-	 */
-	public void setAccountAuthcService(AccountAuthcService accountAuthcService)
-	{
-		this.accountAuthcService = accountAuthcService;
 	}
 }

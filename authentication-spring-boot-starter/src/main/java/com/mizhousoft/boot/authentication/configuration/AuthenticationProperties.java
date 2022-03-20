@@ -18,6 +18,9 @@ public class AuthenticationProperties
 	// 启用双因子认证
 	private boolean twoFactorAuthcEnable;
 
+	// Session互斥，同一时间1个账户只能单点登录
+	private boolean sessionMutex = true;
+
 	/**
 	 * 获取verifyHost
 	 * 
@@ -56,5 +59,25 @@ public class AuthenticationProperties
 	public void setTwoFactorAuthcEnable(boolean twoFactorAuthcEnable)
 	{
 		this.twoFactorAuthcEnable = twoFactorAuthcEnable;
+	}
+
+	/**
+	 * 获取sessionMutex
+	 * 
+	 * @return
+	 */
+	public boolean isSessionMutex()
+	{
+		return sessionMutex;
+	}
+
+	/**
+	 * 设置sessionMutex
+	 * 
+	 * @param sessionMutex
+	 */
+	public void setSessionMutex(boolean sessionMutex)
+	{
+		this.sessionMutex = sessionMutex;
 	}
 }
