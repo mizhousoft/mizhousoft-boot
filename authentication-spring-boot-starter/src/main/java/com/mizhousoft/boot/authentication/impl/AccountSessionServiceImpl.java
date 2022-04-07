@@ -85,6 +85,11 @@ public class AccountSessionServiceImpl implements AccountSessionService
 	public AccountDetails getAccountDetails(Session session)
 	{
 		Object simplePrincipalCollection = session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
+		if (null == simplePrincipalCollection)
+		{
+			return null;
+		}
+
 		if (simplePrincipalCollection instanceof SimplePrincipalCollection)
 		{
 			Object primaryPrincipal = ((SimplePrincipalCollection) simplePrincipalCollection).getPrimaryPrincipal();
