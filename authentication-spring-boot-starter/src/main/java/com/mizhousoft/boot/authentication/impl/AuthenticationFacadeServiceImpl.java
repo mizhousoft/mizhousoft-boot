@@ -151,6 +151,11 @@ public class AuthenticationFacadeServiceImpl implements AuthenticationFacadeServ
 			roles.addAll(list);
 		}
 
+		if (roles.isEmpty())
+		{
+			LOG.warn("Permission not found, path is {}.", requestPath);
+		}
+
 		return roles;
 	}
 
