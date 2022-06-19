@@ -27,6 +27,9 @@ public class SmsApplication
 	// endpoint
 	private String endpoint;
 
+	// 地域
+	private String region;
+
 	// 编码
 	private String nationCode;
 
@@ -134,6 +137,26 @@ public class SmsApplication
 	public void setEndpoint(String endpoint)
 	{
 		this.endpoint = endpoint;
+	}
+
+	/**
+	 * 获取region
+	 * 
+	 * @return
+	 */
+	public String getRegion()
+	{
+		return region;
+	}
+
+	/**
+	 * 设置region
+	 * 
+	 * @param region
+	 */
+	public void setRegion(String region)
+	{
+		this.region = region;
 	}
 
 	/**

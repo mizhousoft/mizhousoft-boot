@@ -1,7 +1,7 @@
 package com.mizhousoft.boot.sms.service;
 
-import com.mizhousoft.cloudsdk.CloudSDKException;
 import com.mizhousoft.cloudsdk.sms.CloudSmsTemplate;
+import com.mizhousoft.cloudsdk.sms.SmsSendException;
 
 /**
  * 验证码短信服务
@@ -17,9 +17,9 @@ public interface VerificationCodeSmsService
 	 * @param host
 	 * @param smsTemplate
 	 * @return
-	 * @throws CloudSDKException
+	 * @throws SmsSendException
 	 */
-	String sendVerificationCode(String phoneNumber, String host, CloudSmsTemplate smsTemplate) throws CloudSDKException;
+	String sendVerificationCode(String phoneNumber, String host, CloudSmsTemplate smsTemplate) throws SmsSendException;
 
 	/**
 	 * 校验
@@ -27,7 +27,7 @@ public interface VerificationCodeSmsService
 	 * @param phoneNumber
 	 * @param code
 	 * @param smsTemplate
-	 * @throws CloudSDKException
+	 * @throws SmsSendException
 	 */
-	void verify(String phoneNumber, String code, CloudSmsTemplate smsTemplate) throws CloudSDKException;
+	void verify(String phoneNumber, String code, CloudSmsTemplate smsTemplate) throws SmsSendException;
 }

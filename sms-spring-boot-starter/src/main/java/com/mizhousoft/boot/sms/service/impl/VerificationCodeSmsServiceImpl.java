@@ -1,7 +1,7 @@
 package com.mizhousoft.boot.sms.service.impl;
 
 import java.security.SecureRandom;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -11,9 +11,9 @@ import com.mizhousoft.boot.sms.model.SmsVerificationCode;
 import com.mizhousoft.boot.sms.properties.SmsApplication;
 import com.mizhousoft.boot.sms.service.SmsWindControlService;
 import com.mizhousoft.boot.sms.service.VerificationCodeSmsService;
-import com.mizhousoft.cloudsdk.CloudSDKException;
 import com.mizhousoft.cloudsdk.sms.CloudSmsTemplate;
 import com.mizhousoft.cloudsdk.sms.SendSmsClient;
+import com.mizhousoft.cloudsdk.sms.SmsSendException;
 
 /**
  * 验证码短信服务
@@ -46,12 +46,12 @@ public class VerificationCodeSmsServiceImpl implements VerificationCodeSmsServic
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String sendVerificationCode(String phoneNumber, String host, CloudSmsTemplate smsTemplate) throws CloudSDKException
+	public String sendVerificationCode(String phoneNumber, String host, CloudSmsTemplate smsTemplate) throws SmsSendException
 	{
 		boolean ok = smsWindControlService.determineRequestOk(phoneNumber, host);
 		if (!ok)
 		{
-			throw new CloudSDKException(phoneNumber + " phone number is illegal, host is " + host);
+			throw new SmsSendException(phoneNumber + " phone number is illegal, host is " + host);
 		}
 
 		int validTime = 10;
@@ -72,7 +72,7 @@ public class VerificationCodeSmsServiceImpl implements VerificationCodeSmsServic
 		}
 
 		// 短信模板配置固化
-		Map<String, String> paramMap = new HashMap<>(2);
+		Map<String, String> paramMap = new LinkedHashMap<>(2);
 		paramMap.put("verificationCode", verificationCode);
 		paramMap.put("validTime", String.valueOf(validTime));
 
@@ -88,18 +88,18 @@ public class VerificationCodeSmsServiceImpl implements VerificationCodeSmsServic
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void verify(String phoneNumber, String code, CloudSmsTemplate smsTemplate) throws CloudSDKException
+	public void verify(String phoneNumber, String code, CloudSmsTemplate smsTemplate) throws SmsSendException
 	{
 		String cacheKey = getCacheKey(phoneNumber, smsTemplate);
 
 		SmsVerificationCode smsVerificationCode = getSmsVerificationCode(cacheKey);
 		if (null == smsVerificationCode)
 		{
-			throw new CloudSDKException("sms.verification.code.verify.null", "Verification code is null.");
+			throw new SmsSendException("sms.verification.code.verify.null", "Verification code is null.");
 		}
 		else if (!smsVerificationCode.getVerificationCode().equals(code))
 		{
-			throw new CloudSDKException("sms.verification.code.verify.wrong", "Verification code is wrong.");
+			throw new SmsSendException("sms.verification.code.verify.wrong", "Verification code is wrong.");
 		}
 		else
 		{

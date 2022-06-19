@@ -12,14 +12,15 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
 import com.mizhousoft.aliyun.sms.AliyunSendSmsClient;
-import com.mizhousoft.aliyun.sms.AliyunSmsProfile;
 import com.mizhousoft.boot.sms.properties.SmsApplication;
 import com.mizhousoft.boot.sms.properties.SmsApplicationProperties;
 import com.mizhousoft.cloudsdk.CloudProvider;
 import com.mizhousoft.cloudsdk.CloudSDKException;
 import com.mizhousoft.cloudsdk.sms.SmsApplicationFactory;
 import com.mizhousoft.cloudsdk.sms.SmsApplicationService;
+import com.mizhousoft.cloudsdk.sms.SmsProfile;
 import com.mizhousoft.cloudsdk.sms.SmsTemplateContainer;
+import com.mizhousoft.tencent.sms.TencentSendSmsClient;
 
 /**
  * 短信应用工程
@@ -81,13 +82,29 @@ public class SmsApplicationFactoryImpl implements SmsApplicationFactory, Command
 		{
 			AliyunSendSmsClient sendSmsClient = new AliyunSendSmsClient();
 
-			AliyunSmsProfile profile = new AliyunSmsProfile();
+			SmsProfile profile = new SmsProfile();
 			profile.setAccessKeyId(application.getAppId());
 			profile.setAccessKeySecret(application.getAppKey());
 			profile.setEndpoint(application.getEndpoint());
 			sendSmsClient.init(profile);
 
 			SmsApplicationServiceImpl service = new SmsApplicationServiceImpl(application, sendSmsClient, smsTemplateContainer);
+
+			return service;
+		}
+		else if (CloudProvider.TENCENT.isSelf(application.getVendor()))
+		{
+			TencentSendSmsClient sendSmsClient = new TencentSendSmsClient();
+
+			SmsProfile profile = new SmsProfile();
+			profile.setAccessKeyId(application.getAppId());
+			profile.setAccessKeySecret(application.getAppKey());
+			profile.setEndpoint(application.getEndpoint());
+			profile.setRegion(application.getRegion());
+			sendSmsClient.init(profile);
+
+			SmsApplicationServiceImpl service = new SmsApplicationServiceImpl(application, sendSmsClient, smsTemplateContainer);
+
 			return service;
 		}
 		else
