@@ -152,7 +152,7 @@ public class SmsApplicationServiceImpl implements SmsApplicationService
 
 		CloudSmsTemplate smsTemplate = getBySmsTemplate(templateCode);
 
-		verificationCodeSmsService.verify(phoneNumber, templateCode, smsTemplate);
+		verificationCodeSmsService.verify(phoneNumber, code, smsTemplate);
 	}
 
 	private CloudSmsTemplate getBySmsTemplate(String templateCode) throws SmsSendException
