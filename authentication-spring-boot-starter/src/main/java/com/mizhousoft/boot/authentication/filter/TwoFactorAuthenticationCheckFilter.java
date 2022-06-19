@@ -6,6 +6,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.SecurityUtils;
@@ -49,7 +50,11 @@ public class TwoFactorAuthenticationCheckFilter extends OncePerRequestFilter
 
 		if (!isTwoFactorAuthcPassed)
 		{
-			LOG.error("{} has not passed two-factor authentication, force to logout.", accountDetails.getAccountName());
+			HttpServletRequest httpRequest = WebUtils.toHttp(request);
+			String path = WebUtils.getPathWithinApplication(httpRequest);
+
+			LOG.error("{} has not passed two-factor authentication, request path is {}, force to logout.", accountDetails.getAccountName(),
+			        path);
 
 			// 再次退出
 			try
