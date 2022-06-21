@@ -1,7 +1,6 @@
 package com.mizhousoft.boot.authentication.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -10,7 +9,6 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.commons.collections4.SetUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +17,7 @@ import org.springframework.stereotype.Service;
 
 import com.mizhousoft.boot.authentication.AuthenticationFacadeService;
 import com.mizhousoft.boot.authentication.service.AccessControlService;
-import com.mizhousoft.boot.authentication.service.AuthenticationServiceProvider;
+import com.mizhousoft.boot.authentication.service.ApplicationServiceIdProvider;
 import com.mizhousoft.boot.authentication.service.RequestPathService;
 
 /**
@@ -36,13 +34,10 @@ public class AuthenticationFacadeServiceImpl implements AuthenticationFacadeServ
 	private List<RequestPathService> requestPathServices;
 
 	@Autowired
-	private AuthenticationServiceProvider serviceProvider;
+	private ApplicationServiceIdProvider serviceIdProvider;
 
 	@Autowired
 	private AccessControlService accessControlService;
-
-	// 服务ID列表
-	private Set<String> serviceIdList = new HashSet<>(5);
 
 	/**
 	 * {@inheritDoc}
@@ -52,15 +47,14 @@ public class AuthenticationFacadeServiceImpl implements AuthenticationFacadeServ
 	{
 		List<String> requestPaths = new ArrayList<>(10);
 
-		for (String serviceId : serviceIdList)
+		String serviceId = serviceIdProvider.getServiceId();
+
+		for (RequestPathService requestPathService : requestPathServices)
 		{
-			for (RequestPathService requestPathService : requestPathServices)
+			List<String> paths = requestPathService.queryAuthcRequestPaths(serviceId);
+			if (null != paths)
 			{
-				List<String> paths = requestPathService.queryAuthcRequestPaths(serviceId);
-				if (null != paths)
-				{
-					requestPaths.addAll(paths);
-				}
+				requestPaths.addAll(paths);
 			}
 		}
 
@@ -75,15 +69,14 @@ public class AuthenticationFacadeServiceImpl implements AuthenticationFacadeServ
 	{
 		List<String> requestPaths = new ArrayList<>(10);
 
-		for (String serviceId : serviceIdList)
+		String serviceId = serviceIdProvider.getServiceId();
+
+		for (RequestPathService requestPathService : requestPathServices)
 		{
-			for (RequestPathService requestPathService : requestPathServices)
+			List<String> paths = requestPathService.queryAuthzRequestPaths(serviceId);
+			if (null != paths)
 			{
-				List<String> paths = requestPathService.queryAuthzRequestPaths(serviceId);
-				if (null != paths)
-				{
-					requestPaths.addAll(paths);
-				}
+				requestPaths.addAll(paths);
 			}
 		}
 
@@ -98,15 +91,14 @@ public class AuthenticationFacadeServiceImpl implements AuthenticationFacadeServ
 	{
 		List<String> requestPaths = new ArrayList<>(10);
 
-		for (String serviceId : serviceIdList)
+		String serviceId = serviceIdProvider.getServiceId();
+
+		for (RequestPathService requestPathService : requestPathServices)
 		{
-			for (RequestPathService requestPathService : requestPathServices)
+			List<String> paths = requestPathService.queryLoginAuditRequestPaths(serviceId);
+			if (null != paths)
 			{
-				List<String> paths = requestPathService.queryLoginAuditRequestPaths(serviceId);
-				if (null != paths)
-				{
-					requestPaths.addAll(paths);
-				}
+				requestPaths.addAll(paths);
 			}
 		}
 
@@ -122,15 +114,14 @@ public class AuthenticationFacadeServiceImpl implements AuthenticationFacadeServ
 	{
 		Map<String, String> requestPathMap = new HashMap<>(10);
 
-		for (String serviceId : serviceIdList)
+		String serviceId = serviceIdProvider.getServiceId();
+
+		for (RequestPathService requestPathService : requestPathServices)
 		{
-			for (RequestPathService requestPathService : requestPathServices)
+			List<String> paths = requestPathService.queryNonUpdateAccessTimeRequestPaths(serviceId);
+			if (null != paths)
 			{
-				List<String> paths = requestPathService.queryNonUpdateAccessTimeRequestPaths(serviceId);
-				if (null != paths)
-				{
-					paths.forEach(path -> requestPathMap.put(path, path));
-				}
+				paths.forEach(path -> requestPathMap.put(path, path));
 			}
 		}
 
@@ -145,11 +136,10 @@ public class AuthenticationFacadeServiceImpl implements AuthenticationFacadeServ
 	{
 		Set<String> roles = new HashSet<>(5);
 
-		for (String serviceId : serviceIdList)
-		{
-			Set<String> list = accessControlService.getRolesByPath(serviceId, requestPath);
-			roles.addAll(list);
-		}
+		String serviceId = serviceIdProvider.getServiceId();
+
+		Set<String> list = accessControlService.getRolesByPath(serviceId, requestPath);
+		roles.addAll(list);
 
 		if (roles.isEmpty())
 		{
@@ -162,19 +152,12 @@ public class AuthenticationFacadeServiceImpl implements AuthenticationFacadeServ
 	@PostConstruct
 	public void initialize()
 	{
-		Set<String> serviceIds = serviceProvider.listServiceIds();
-		serviceIds = SetUtils.emptyIfNull(serviceIds);
-
-		this.serviceIdList = Collections.unmodifiableSet(serviceIds);
-
-		String mainSrvId = serviceProvider.getMainServiceId();
-		mainSrvId = StringUtils.defaultString(mainSrvId);
-
-		if (!serviceIds.contains(mainSrvId))
+		String serviceId = serviceIdProvider.getServiceId();
+		if (StringUtils.isBlank(serviceId))
 		{
-			throw new IllegalArgumentException(mainSrvId + " service id is not in list.");
+			throw new IllegalArgumentException("Application service id null.");
 		}
 
-		LOG.info("Load authentication service id list: {}", serviceIds);
+		LOG.info("Application service id is {}.", serviceId);
 	}
 }
