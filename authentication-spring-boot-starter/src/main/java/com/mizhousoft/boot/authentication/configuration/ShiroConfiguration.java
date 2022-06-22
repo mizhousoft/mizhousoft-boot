@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.mizhousoft.boot.authentication.AccountSessionService;
-import com.mizhousoft.boot.authentication.AuthenticationFacadeService;
+import com.mizhousoft.boot.authentication.AuthenticationService;
 import com.mizhousoft.boot.authentication.filter.FirstLoginCheckFilter;
 import com.mizhousoft.boot.authentication.filter.PasswordExpiredCheckFilter;
 import com.mizhousoft.boot.authentication.filter.SecurityContextPersistenceFilter;
@@ -54,7 +54,7 @@ public class ShiroConfiguration
 	private AuthenticationProperties authenticationProperties;
 
 	@Autowired
-	private AuthenticationFacadeService authenticationFacadeService;
+	private AuthenticationService authenticationService;
 
 	@Bean
 	public SecureSessionDAO getSecureSessionDAO()
@@ -141,7 +141,7 @@ public class ShiroConfiguration
 		AnonymousFilter anonFilter = new AnonymousFilter();
 
 		AccessAuthorizationFilter accessAuthorizationFilter = new AccessAuthorizationFilter();
-		accessAuthorizationFilter.setAuthenticationFacadeService(authenticationFacadeService);
+		accessAuthorizationFilter.setAuthenticationService(authenticationService);
 		accessAuthorizationFilter.setLoginUrl(LOGIN_URL);
 		accessAuthorizationFilter.setUnauthorizedUrl(UNAUTHORIZED_URL);
 
@@ -182,7 +182,7 @@ public class ShiroConfiguration
 
 	public DefaultFilterChainManager buildFilterChainManager(DefaultFilterChainManager filterChain)
 	{
-		List<String> authzPaths = authenticationFacadeService.queryAuthzRequestPaths();
+		List<String> authzPaths = authenticationService.getAuthzRequestPaths();
 		for (String authzPath : authzPaths)
 		{
 			filterChain.addToChain(authzPath, "authc");
@@ -198,7 +198,7 @@ public class ShiroConfiguration
 			}
 		}
 
-		List<String> authcPaths = authenticationFacadeService.queryAuthcRequestPaths();
+		List<String> authcPaths = authenticationService.getAuthcRequestPaths();
 		for (String authcPath : authcPaths)
 		{
 			filterChain.addToChain(authcPath, "authc");
@@ -213,7 +213,7 @@ public class ShiroConfiguration
 			}
 		}
 
-		List<String> onlyAuthcPaths = authenticationFacadeService.queryLoginAuditRequestPaths();
+		List<String> onlyAuthcPaths = authenticationService.getLoginAuditRequestPaths();
 		for (String onlyAuthcPath : onlyAuthcPaths)
 		{
 			filterChain.addToChain(onlyAuthcPath, "authc");
@@ -248,7 +248,7 @@ public class ShiroConfiguration
 		SecurityFrameworkFilter filter = new SecurityFrameworkFilter();
 		registrationBean.setFilter(filter);
 
-		Map<String, String> requestPathMap = authenticationFacadeService.queryNonUpdateAccessTimeRequestPaths();
+		Map<String, String> requestPathMap = authenticationService.getNonUpdateAccessTimeRequestPaths();
 		filter.setNonUpdateAccessTimeURIMap(requestPathMap);
 
 		List<String> urlPatterns = new ArrayList<String>(1);

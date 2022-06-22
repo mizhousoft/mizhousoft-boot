@@ -9,35 +9,35 @@ import java.util.Set;
  *
  * @version
  */
-public interface AuthenticationFacadeService
+public interface AuthenticationService
 {
 	/**
-	 * 查询仅仅要认证的请求路径
+	 * 获取仅仅要认证的请求路径
 	 * 
 	 * @return
 	 */
-	List<String> queryAuthcRequestPaths();
+	List<String> getAuthcRequestPaths();
 
 	/**
-	 * 查询要认证和鉴权的请求路径
+	 * 获取要认证和鉴权的请求路径
 	 * 
 	 * @return
 	 */
-	List<String> queryAuthzRequestPaths();
+	List<String> getAuthzRequestPaths();
 
 	/**
-	 * 获取登录审计请求路径
+	 * 获取登录请求路径
 	 * 
 	 * @return
 	 */
-	List<String> queryLoginAuditRequestPaths();
+	List<String> getLoginAuditRequestPaths();
 
 	/**
 	 * 获取不更新访问时间的请求路径
 	 * 
 	 * @return
 	 */
-	Map<String, String> queryNonUpdateAccessTimeRequestPaths();
+	Map<String, String> getNonUpdateAccessTimeRequestPaths();
 
 	/**
 	 * 根据请求路径获取角色
