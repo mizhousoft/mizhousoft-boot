@@ -42,4 +42,21 @@ public interface QuartzScheduler extends OnceJobExecutor, IntervalJobExecutor, C
 	 * @throws QuartzException
 	 */
 	void deleteJob(String jobName, String jobGroup) throws QuartzException;
+
+	/**
+	 * 中断任务
+	 * 
+	 * @param jobName
+	 * @throws QuartzException
+	 */
+	void interruptJob(String jobName) throws QuartzException;
+
+	/**
+	 * 中断任务
+	 * 
+	 * @param jobName
+	 * @param jobGroup
+	 * @throws QuartzException
+	 */
+	void interruptJob(String jobName, String jobGroup) throws QuartzException;
 }

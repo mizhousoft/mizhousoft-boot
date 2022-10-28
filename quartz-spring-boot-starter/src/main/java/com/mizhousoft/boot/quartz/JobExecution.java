@@ -1,9 +1,10 @@
 package com.mizhousoft.boot.quartz;
 
-import org.quartz.Job;
+import org.quartz.InterruptableJob;
 import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.quartz.UnableToInterruptJobException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -13,7 +14,7 @@ import org.springframework.context.ApplicationContext;
  *
  * @version
  */
-public abstract class JobExecution implements Job
+public abstract class JobExecution implements InterruptableJob
 {
 	private static final Logger LOG = LoggerFactory.getLogger(JobExecution.class);
 
@@ -52,6 +53,15 @@ public abstract class JobExecution implements Job
 		{
 			jobDetail.getJobDataMap().clear();
 		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void interrupt() throws UnableToInterruptJobException
+	{
+
 	}
 
 	protected void initialize() throws JobExecutionException

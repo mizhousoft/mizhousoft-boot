@@ -183,6 +183,35 @@ public class DefaultQuartzScheduler implements QuartzScheduler
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void interruptJob(String jobName) throws QuartzException
+	{
+		interruptJob(jobName, SchedulerConstants.DEFAULT_JOB_GROUP_NAME);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void interruptJob(String jobName, String jobGroup) throws QuartzException
+	{
+		JobKey jobKey = new JobKey(jobName, jobGroup);
+
+		try
+		{
+			scheduler.interrupt(jobKey);
+
+			LOG.info("Interrupt job {} successfully.", jobKey.toString());
+		}
+		catch (SchedulerException e)
+		{
+			throw new QuartzException(e.getMessage(), e);
+		}
+	}
+
 	@PostConstruct
 	public void initialize() throws Exception
 	{
@@ -214,4 +243,5 @@ public class DefaultQuartzScheduler implements QuartzScheduler
 			}
 		}
 	}
+
 }
