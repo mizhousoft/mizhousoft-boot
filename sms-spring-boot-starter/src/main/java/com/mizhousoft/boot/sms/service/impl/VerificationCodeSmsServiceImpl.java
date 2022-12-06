@@ -1,6 +1,5 @@
 package com.mizhousoft.boot.sms.service.impl;
 
-import java.security.SecureRandom;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -129,11 +128,13 @@ public class VerificationCodeSmsServiceImpl implements VerificationCodeSmsServic
 
 	private String genRandomCode()
 	{
-		SecureRandom random = new SecureRandom();
-		StringBuffer buffer = new StringBuffer(6);
-		random.ints(6, 0, 9).forEach(value -> buffer.append(value));
+		// SecureRandom random = new SecureRandom();
+		// StringBuffer buffer = new StringBuffer(6);
+		// random.ints(6, 0, 9).forEach(value -> buffer.append(value));
+		//
+		// String verifyCode = buffer.toString();
 
-		String verifyCode = buffer.toString();
+		String verifyCode = String.valueOf((int) ((Math.random() * 9 + 1) * 100000));
 		return verifyCode;
 	}
 }
