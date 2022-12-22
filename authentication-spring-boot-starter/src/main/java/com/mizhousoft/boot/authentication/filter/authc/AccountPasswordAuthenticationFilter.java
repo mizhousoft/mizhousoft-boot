@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
@@ -60,14 +61,16 @@ public class AccountPasswordAuthenticationFilter extends FormAuthenticationFilte
 	{
 		AuthenticationToken token = null;
 
-		String userAgent = WebUtils.toHttp(request).getHeader(SecurityConstants.USER_AGENT_HEADER);
+		HttpServletRequest httpRequest = WebUtils.toHttp(request);
+
+		String userAgent = httpRequest.getHeader(SecurityConstants.USER_AGENT_HEADER);
 		if (StringUtils.isBlank(userAgent))
 		{
 			LOG.error("Request User-Agent header is null.");
 			return null;
 		}
 
-		if (BMCWebUtils.isJSONRequest(request))
+		if (BMCWebUtils.isJSONRequest(httpRequest))
 		{
 			try
 			{

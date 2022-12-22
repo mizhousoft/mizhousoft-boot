@@ -77,10 +77,10 @@ public class SecureCookie extends SimpleCookie
 	 * @param secure
 	 * @param httpOnly
 	 */
-	private void addCookieHeader(HttpServletResponse response, String name, String value, String comment, String domain,
-	        String path, int maxAge, int version, boolean secure, boolean httpOnly)
+	private void addCookieHeader(HttpServletResponse response, String name, String value, String comment, String domain, String path,
+	        int maxAge, int version, boolean secure, boolean httpOnly)
 	{
 		String headerValue = buildHeaderValue(name, value, comment, domain, path, maxAge, version, secure, httpOnly);
-		response.addHeader(COOKIE_HEADER_NAME, headerValue);
+		response.setHeader(COOKIE_HEADER_NAME, headerValue);
 	}
 }

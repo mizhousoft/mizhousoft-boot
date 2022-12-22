@@ -18,6 +18,11 @@ public interface SecurityConstants
 	String ACCEPT_HEADER = "Accept";
 
 	/**
+	 * Content-Type
+	 */
+	String CONTENT_TYPE_HEADER = "Content-Type";
+
+	/**
 	 * 主机
 	 */
 	String HOST = "HOST";

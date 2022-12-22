@@ -52,8 +52,7 @@ public class SecureWebSessionManager extends DefaultWebSessionManager
 		}
 		else
 		{
-			log.debug("Session ID cookie is disabled.  No cookie has been set for new session with id {}",
-			        session.getId());
+			log.debug("Session ID cookie is disabled.  No cookie has been set for new session with id {}", session.getId());
 		}
 
 		request.removeAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID_SOURCE);
@@ -76,6 +75,8 @@ public class SecureWebSessionManager extends DefaultWebSessionManager
 		}
 
 		Cookie template = getSessionIdCookie();
+		template.setSecure(true);
+
 		Cookie cookie = new SecureCookie(template);
 		String idString = currentId.toString();
 		cookie.setValue(idString);

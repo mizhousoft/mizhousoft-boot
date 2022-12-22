@@ -66,7 +66,7 @@ public class TwoFactorAuthenticationCheckFilter extends OncePerRequestFilter
 				LOG.error("Subject logout failed.", e);
 			}
 
-			if (BMCWebUtils.isJSONRequest(request))
+			if (BMCWebUtils.isJSONRequest(httpRequest))
 			{
 				HttpServletResponse httpResp = WebUtils.toHttp(response);
 				httpResp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

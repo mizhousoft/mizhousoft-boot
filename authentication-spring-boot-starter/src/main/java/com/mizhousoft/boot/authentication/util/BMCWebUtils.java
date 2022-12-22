@@ -1,6 +1,7 @@
 package com.mizhousoft.boot.authentication.util;
 
 import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.web.util.WebUtils;
@@ -15,20 +16,35 @@ import com.mizhousoft.boot.authentication.SecurityConstants;
  */
 public abstract class BMCWebUtils
 {
+	public static boolean isJSONRequest(ServletRequest request)
+	{
+		return isJSONRequest(WebUtils.toHttp(request));
+	}
+
 	/**
 	 * 是否JSON请求
 	 * 
 	 * @param request
 	 * @return
 	 */
-	public static boolean isJSONRequest(ServletRequest request)
+	public static boolean isJSONRequest(HttpServletRequest request)
 	{
-		String accept = WebUtils.toHttp(request).getHeader(SecurityConstants.ACCEPT_HEADER);
+		String accept = request.getHeader(SecurityConstants.ACCEPT_HEADER);
 		if (StringUtils.isBlank(accept))
 		{
 			return false;
 		}
+		else if (accept.contains(MediaType.APPLICATION_JSON_VALUE))
+		{
+			return true;
+		}
 
-		return accept.contains(MediaType.APPLICATION_JSON_VALUE);
+		String contentType = request.getHeader(SecurityConstants.CONTENT_TYPE_HEADER);
+		if (StringUtils.isBlank(contentType))
+		{
+			return false;
+		}
+
+		return contentType.contains(MediaType.APPLICATION_JSON_VALUE);
 	}
 }
