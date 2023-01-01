@@ -22,6 +22,19 @@ public class CryptoServiceImpl implements CryptoService
 	 * {@inheritDoc}
 	 */
 	@Override
+	public String encrypt(String plainText, String keyId) throws CryptoException
+	{
+		byte[] secret = secretManager.getSecret(keyId);
+		byte[] bytes = AESEncryptor.encrypt(plainText.getBytes(CharEncoding.UTF8), secret);
+		String cipherText = HexUtils.encodeHexString(bytes, false);
+
+		return cipherText;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public String decryptToString(String cipherText, String keyId) throws CryptoException
 	{
 		try

@@ -10,6 +10,16 @@ import com.mizhousoft.commons.crypto.CryptoException;
 public interface CryptoService
 {
 	/**
+	 * 加密成字符串
+	 * 
+	 * @param plainText
+	 * @param keyId
+	 * @return
+	 * @throws CryptoException
+	 */
+	String encrypt(String plainText, String keyId) throws CryptoException;
+
+	/**
 	 * 解密成字符串
 	 * 
 	 * @param cipherText
