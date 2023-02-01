@@ -20,7 +20,7 @@ public class MailConfiguration
 	private String from;
 
 	@Bean
-	public MailService getRestClientService(JavaMailSender mailSender)
+	public MailService getMailService(JavaMailSender mailSender)
 	{
 		MailServiceImpl mailService = new MailServiceImpl();
 		mailService.setMailSender(mailSender);
