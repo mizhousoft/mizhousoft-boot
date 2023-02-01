@@ -31,6 +31,7 @@
 		<module>push-spring-boot-starter</module>
 		<module>sms-spring-boot-starter</module>
 		<module>authentication-spring-boot-starter</module>
+		<module>mail-spring-boot-starter</module>
 	</modules>
 
 </project>
