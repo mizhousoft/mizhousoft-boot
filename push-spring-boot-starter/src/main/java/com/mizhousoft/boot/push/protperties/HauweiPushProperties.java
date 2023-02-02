@@ -16,7 +16,7 @@ public class HauweiPushProperties
 	private String appId;
 
 	// appSecret
-	private String appSecret;
+	private volatile String appSecret;
 
 	// intent格式
 	private String intentFormat;

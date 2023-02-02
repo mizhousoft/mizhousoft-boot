@@ -9,7 +9,7 @@ import com.mizhousoft.boot.crypto.descriptor.WorkSecretDescriptor;
  */
 public class WorkSecret
 {
-	private byte[] secret;
+	private volatile byte[] secret;
 
 	private WorkSecretDescriptor descriptor;
 

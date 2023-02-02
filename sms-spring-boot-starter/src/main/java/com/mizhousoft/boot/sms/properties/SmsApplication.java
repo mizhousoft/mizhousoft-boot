@@ -22,7 +22,7 @@ public class SmsApplication
 	private String appId;
 
 	// 应用密钥
-	private String appKey;
+	private volatile String appKey;
 
 	// endpoint
 	private String endpoint;

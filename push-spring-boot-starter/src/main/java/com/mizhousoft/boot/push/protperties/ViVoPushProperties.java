@@ -19,7 +19,7 @@ public class ViVoPushProperties
 	private String appKey;
 
 	// APP secret
-	private String appSecret;
+	private volatile String appSecret;
 
 	// 是否测试环境
 	private boolean sandbox;

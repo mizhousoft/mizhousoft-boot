@@ -16,7 +16,7 @@ public class XiaoMiPushProperties
 	private String appId;
 
 	// APP secret
-	private String appSecret;
+	private volatile String appSecret;
 
 	// intent格式
 	private String intentFormat;

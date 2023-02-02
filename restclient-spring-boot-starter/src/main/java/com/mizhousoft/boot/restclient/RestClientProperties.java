@@ -13,10 +13,10 @@ import org.springframework.stereotype.Component;
 public class RestClientProperties
 {
 	// 文件路径，为空的话，加载内置的信任文件
-	private String path;
+	private volatile String path;
 
 	// 密码
-	private String password;
+	private volatile String password;
 
 	/**
 	 * 获取path

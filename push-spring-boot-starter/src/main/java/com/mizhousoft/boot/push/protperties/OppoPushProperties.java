@@ -16,7 +16,7 @@ public class OppoPushProperties
 	private String appKey;
 
 	// masterSecret
-	private String masterSecret;
+	private volatile String masterSecret;
 
 	// intent格式
 	private String intentFormat;
