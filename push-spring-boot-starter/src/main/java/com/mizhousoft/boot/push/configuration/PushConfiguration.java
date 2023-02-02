@@ -19,7 +19,6 @@ import org.springframework.core.io.ResourceLoader;
 import com.mizhousoft.boot.push.protperties.ApplePushProperties;
 import com.mizhousoft.boot.push.protperties.HauweiPushProperties;
 import com.mizhousoft.boot.push.protperties.OppoPushProperties;
-import com.mizhousoft.boot.push.protperties.UMengPushProperties;
 import com.mizhousoft.boot.push.protperties.ViVoPushProperties;
 import com.mizhousoft.boot.push.protperties.XiaoMiPushProperties;
 import com.mizhousoft.commons.restclient.service.RestClientService;
@@ -29,7 +28,6 @@ import com.mizhousoft.push.apple.config.AppleProfile;
 import com.mizhousoft.push.exception.PushException;
 import com.mizhousoft.push.huawei.config.HuaweiProfile;
 import com.mizhousoft.push.oppo.config.OppoProfile;
-import com.mizhousoft.push.umeng.config.UMengProfile;
 import com.mizhousoft.push.union.UnifiedPushService;
 import com.mizhousoft.push.union.impl.UnifiedPushServiceImpl;
 import com.mizhousoft.push.vivo.config.ViVoProfile;
@@ -63,9 +61,6 @@ public class PushConfiguration
 
 	@Autowired
 	private ApplePushProperties applePushProperties;
-
-	@Autowired
-	private UMengPushProperties umengPushProperties;
 
 	@Autowired
 	private RestClientService restClientService;
@@ -170,15 +165,6 @@ public class PushConfiguration
 			xiaomiProfile.setIntentFormat(xiaoMiPushProperties.getIntentFormat());
 			xiaomiProfile.setPackageNames(xiaoMiPushProperties.getPackageNames());
 			profileMap.put(PushProvider.XIAOMI, xiaomiProfile);
-		}
-
-		if (!StringUtils.isBlank(umengPushProperties.getAppSecret()))
-		{
-			UMengProfile umengProfile = new UMengProfile();
-			umengProfile.setAppId(umengPushProperties.getAppId());
-			umengProfile.setAppSecret(umengPushProperties.getAppSecret());
-			umengProfile.setSandbox(umengPushProperties.isSandbox());
-			profileMap.put(PushProvider.UMENG, umengProfile);
 		}
 
 		if (!StringUtils.isBlank(applePushProperties.getBundleIdentifier()))

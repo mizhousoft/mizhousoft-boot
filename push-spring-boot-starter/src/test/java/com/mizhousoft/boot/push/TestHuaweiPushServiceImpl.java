@@ -1,11 +1,11 @@
 package com.mizhousoft.boot.push;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.mizhousoft.commons.json.JSONException;
 import com.mizhousoft.push.PushProvider;
@@ -20,7 +20,7 @@ import com.mizhousoft.push.union.UnifiedPushService;
  *
  * @version
  */
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = DemoApplication.class)
 public class TestHuaweiPushServiceImpl
 {
@@ -40,11 +40,11 @@ public class TestHuaweiPushServiceImpl
 		{
 			PushResult result = unifiedPushService.pushNotification(pushProvider, request);
 
-			Assert.assertNotNull(result.getTraceId());
+			Assertions.assertNotNull(result.getTraceId());
 		}
 		catch (PushException e)
 		{
-			Assert.fail(e.getMessage());
+			Assertions.fail(e.getMessage());
 		}
 	}
 
@@ -58,11 +58,11 @@ public class TestHuaweiPushServiceImpl
 		{
 			PushResult result = unifiedPushService.pushNotification(pushProvider, request);
 
-			Assert.assertNotNull(result.getTraceId());
+			Assertions.assertNotNull(result.getTraceId());
 		}
 		catch (PushException e)
 		{
-			Assert.fail(e.getMessage());
+			Assertions.fail(e.getMessage());
 		}
 	}
 
@@ -76,11 +76,11 @@ public class TestHuaweiPushServiceImpl
 		{
 			PushResult result = unifiedPushService.pushNotification(pushProvider, request);
 
-			Assert.assertNotNull(result.getTraceId());
+			Assertions.assertNotNull(result.getTraceId());
 		}
 		catch (PushException e)
 		{
-			Assert.fail(e.getMessage());
+			Assertions.fail(e.getMessage());
 		}
 	}
 
@@ -95,11 +95,11 @@ public class TestHuaweiPushServiceImpl
 		{
 			PushResult result = unifiedPushService.pushNotification(pushProvider, request);
 
-			Assert.assertNotNull(result.getTraceId());
+			Assertions.assertNotNull(result.getTraceId());
 		}
 		catch (PushException e)
 		{
-			Assert.fail(e.getMessage());
+			Assertions.fail(e.getMessage());
 		}
 	}
 
@@ -112,11 +112,11 @@ public class TestHuaweiPushServiceImpl
 		{
 			PushResult result = unifiedPushService.pushMessage(pushProvider, request);
 
-			Assert.assertNotNull(result.getIllegalTokens());
+			Assertions.assertNotNull(result.getIllegalTokens());
 		}
 		catch (PushException e)
 		{
-			Assert.fail(e.getMessage());
+			Assertions.fail(e.getMessage());
 		}
 	}
 }

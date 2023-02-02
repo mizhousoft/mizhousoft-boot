@@ -1,24 +1,23 @@
 package com.mizhousoft.boot.quartz;
 
-import static org.junit.Assert.fail;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /**
  * OnceJobExecutorImpl Test
  *
  * @version
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = QuartzApplication.class)
 public class OnceJobExecutorTest
 {
@@ -42,7 +41,7 @@ public class OnceJobExecutorTest
 		}
 		catch (QuartzException e)
 		{
-			fail(e.getMessage());
+			Assertions.fail(e.getMessage());
 		}
 
 		TimeUnit.SECONDS.sleep(10);
