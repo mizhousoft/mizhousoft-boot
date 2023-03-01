@@ -33,7 +33,7 @@ public class TestAliyunSmsService
 		String templateCode = "register";
 		String signName = "尼欧科技";
 		Object templateId = "SMS_147436020";
-		CloudSmsTemplate template = new CloudSmsTemplate(null, templateCode, signName, templateId);
+		CloudSmsTemplate template = new CloudSmsTemplate(templateCode, signName, templateId);
 		smsTemplateContainer.register(template);
 
 		SmsApplicationService smsApplicationService = smsApplicationFactory.getByName("general");

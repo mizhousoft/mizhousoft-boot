@@ -21,8 +21,11 @@ public class SmsApplication
 	// 应用ID
 	private String appId;
 
-	// 应用密钥
-	private volatile String appKey;
+	// 密钥ID
+	private String secretId;
+
+	// 密钥key
+	private volatile String secretKey;
 
 	// endpoint
 	private String endpoint;
@@ -100,23 +103,43 @@ public class SmsApplication
 	}
 
 	/**
-	 * 获取appKey
+	 * 获取secretId
 	 * 
 	 * @return
 	 */
-	public String getAppKey()
+	public String getSecretId()
 	{
-		return appKey;
+		return secretId;
 	}
 
 	/**
-	 * 设置appKey
+	 * 设置secretId
 	 * 
-	 * @param appKey
+	 * @param secretId
 	 */
-	public void setAppKey(String appKey)
+	public void setSecretId(String secretId)
 	{
-		this.appKey = appKey;
+		this.secretId = secretId;
+	}
+
+	/**
+	 * 获取secretKey
+	 * 
+	 * @return
+	 */
+	public String getSecretKey()
+	{
+		return secretKey;
+	}
+
+	/**
+	 * 设置secretKey
+	 * 
+	 * @param secretKey
+	 */
+	public void setSecretKey(String secretKey)
+	{
+		this.secretKey = secretKey;
 	}
 
 	/**

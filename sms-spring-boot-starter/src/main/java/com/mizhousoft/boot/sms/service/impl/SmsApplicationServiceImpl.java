@@ -24,6 +24,8 @@ public class SmsApplicationServiceImpl implements SmsApplicationService
 {
 	private static final Logger LOG = LoggerFactory.getLogger(SmsApplicationServiceImpl.class);
 
+	private SmsApplication application;
+
 	private SendSmsClient sendSmsClient;
 
 	private SmsTemplateContainer smsTemplateContainer;
@@ -40,6 +42,7 @@ public class SmsApplicationServiceImpl implements SmsApplicationService
 	public SmsApplicationServiceImpl(SmsApplication application, SendSmsClient sendSmsClient, SmsTemplateContainer smsTemplateContainer)
 	{
 		super();
+		this.application = application;
 		this.sendSmsClient = sendSmsClient;
 		this.smsTemplateContainer = smsTemplateContainer;
 
@@ -61,7 +64,7 @@ public class SmsApplicationServiceImpl implements SmsApplicationService
 
 		try
 		{
-			sendSmsClient.multiSend(phoneNumbers, paramMap, smsTemplate);
+			sendSmsClient.multiSend(phoneNumbers, paramMap, application.getAppId(), smsTemplate);
 
 			SmsBILogger.log(phoneNumbers, true, smsTemplate);
 		}
@@ -88,7 +91,7 @@ public class SmsApplicationServiceImpl implements SmsApplicationService
 
 		try
 		{
-			sendSmsClient.send(phoneNumber, paramMap, smsTemplate);
+			sendSmsClient.send(phoneNumber, paramMap, application.getAppId(), smsTemplate);
 
 			SmsBILogger.log(phoneNumber, true, smsTemplate);
 

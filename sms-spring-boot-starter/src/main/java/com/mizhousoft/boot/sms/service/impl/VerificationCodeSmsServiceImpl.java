@@ -21,6 +21,8 @@ import com.mizhousoft.cloudsdk.sms.SmsSendException;
  */
 public class VerificationCodeSmsServiceImpl implements VerificationCodeSmsService
 {
+	private SmsApplication application;
+
 	private SendSmsClient sendSmsClient;
 
 	private SmsWindControlService smsWindControlService;
@@ -37,6 +39,7 @@ public class VerificationCodeSmsServiceImpl implements VerificationCodeSmsServic
 	public VerificationCodeSmsServiceImpl(SmsApplication application, SendSmsClient sendSmsClient)
 	{
 		super();
+		this.application = application;
 		this.sendSmsClient = sendSmsClient;
 		this.smsWindControlService = new SmsWindControlServiceImpl(application);
 	}
@@ -75,7 +78,7 @@ public class VerificationCodeSmsServiceImpl implements VerificationCodeSmsServic
 		paramMap.put("verificationCode", verificationCode);
 		paramMap.put("validTime", String.valueOf(validTime));
 
-		sendSmsClient.send(phoneNumber, paramMap, smsTemplate);
+		sendSmsClient.send(phoneNumber, paramMap, application.getAppId(), smsTemplate);
 
 		smsVerificationCode = new SmsVerificationCode(host, verificationCode);
 		cache.put(cacheKey, smsVerificationCode);

@@ -83,8 +83,8 @@ public class SmsApplicationFactoryImpl implements SmsApplicationFactory, Command
 			AliyunSendSmsClient sendSmsClient = new AliyunSendSmsClient();
 
 			SmsProfile profile = new SmsProfile();
-			profile.setAccessKeyId(application.getAppId());
-			profile.setAccessKeySecret(application.getAppKey());
+			profile.setAccessKeyId(application.getSecretId());
+			profile.setAccessKeySecret(application.getSecretKey());
 			profile.setEndpoint(application.getEndpoint());
 			sendSmsClient.init(profile);
 
@@ -97,8 +97,8 @@ public class SmsApplicationFactoryImpl implements SmsApplicationFactory, Command
 			TencentSendSmsClient sendSmsClient = new TencentSendSmsClient();
 
 			SmsProfile profile = new SmsProfile();
-			profile.setAccessKeyId(application.getAppId());
-			profile.setAccessKeySecret(application.getAppKey());
+			profile.setAccessKeyId(application.getSecretId());
+			profile.setAccessKeySecret(application.getSecretKey());
 			profile.setEndpoint(application.getEndpoint());
 			profile.setRegion(application.getRegion());
 			sendSmsClient.init(profile);

@@ -30,11 +30,10 @@ public class TestTencentSmsService
 	@Test
 	public void pushNotification() throws CloudSDKException
 	{
-		String appId = "1400119865";
 		String templateCode = "register";
 		String signName = "米舟科技";
 		Object templateId = "650126";
-		CloudSmsTemplate template = new CloudSmsTemplate(appId, templateCode, signName, templateId);
+		CloudSmsTemplate template = new CloudSmsTemplate(templateCode, signName, templateId);
 		smsTemplateContainer.register(template);
 
 		SmsApplicationService smsApplicationService = smsApplicationFactory.getByName("tencent");
