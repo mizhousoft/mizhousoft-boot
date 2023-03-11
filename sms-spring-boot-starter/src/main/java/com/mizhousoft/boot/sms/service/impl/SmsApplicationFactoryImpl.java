@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import com.mizhousoft.aliyun.sms.AliyunSendSmsClient;
@@ -28,6 +29,7 @@ import com.mizhousoft.tencent.sms.TencentSendSmsClient;
  * @version
  */
 @Service
+@Order(value = Integer.MIN_VALUE)
 public class SmsApplicationFactoryImpl implements SmsApplicationFactory, CommandLineRunner
 {
 	private static final Logger LOG = LoggerFactory.getLogger(SmsApplicationFactoryImpl.class);
