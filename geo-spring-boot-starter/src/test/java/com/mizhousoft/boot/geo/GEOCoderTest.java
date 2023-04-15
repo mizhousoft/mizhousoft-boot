@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.mizhousoft.geo.GEOCoder;
+import com.mizhousoft.geo.GEOException;
 import com.mizhousoft.geo.model.Address;
 
 /**
@@ -25,8 +26,15 @@ public class GEOCoderTest
 	@Test
 	public void test()
 	{
-		Address address = geoCoder.regeo(113.6561111111f, 26.8130555556f);
+		try
+		{
+			Address address = geoCoder.regeo(113.6561111111f, 26.8130555556f);
 
-		Assertions.assertEquals(address.getAddrComponent().getProvince(), "湖南省");
+			Assertions.assertEquals(address.getAddrComponent().getProvince(), "湖南省");
+		}
+		catch (GEOException e)
+		{
+			Assertions.fail(e);
+		}
 	}
 }
