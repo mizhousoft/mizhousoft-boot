@@ -19,8 +19,9 @@
 	<properties>
 		<commons.version>1.7.0-SNAPSHOT</commons.version>
 		<cloud.sdk.version>1.7.0-SNAPSHOT</cloud.sdk.version>
-		<mizhousoft.boot.version>1.7.0-SNAPSHOT</mizhousoft.boot.version>
 		<push.version>1.7.0-SNAPSHOT</push.version>
+		<weixin.version>1.7.0-SNAPSHOT</weixin.version>
+		<mizhousoft.boot.version>1.7.0-SNAPSHOT</mizhousoft.boot.version>
 	</properties>
 
 	<modules>
