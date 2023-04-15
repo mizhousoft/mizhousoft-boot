@@ -2,6 +2,7 @@ package com.mizhousoft.boot.weixin.configuration;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,10 @@ import com.mizhousoft.weixin.miniapp.config.MiniAppConfig;
 import com.mizhousoft.weixin.miniapp.service.WxMiniAppService;
 import com.mizhousoft.weixin.miniapp.service.impl.WxMiniAppServiceImpl;
 import com.mizhousoft.weixin.mp.config.WxMpConfig;
+import com.mizhousoft.weixin.mp.service.WxMpMessageHandler;
+import com.mizhousoft.weixin.mp.service.WxMpMessageRouter;
 import com.mizhousoft.weixin.mp.service.WxMpService;
+import com.mizhousoft.weixin.mp.service.impl.WxMpMessageRouterImpl;
 import com.mizhousoft.weixin.mp.service.impl.WxMpServiceImpl;
 import com.mizhousoft.weixin.open.config.WxOpenConfig;
 import com.mizhousoft.weixin.open.service.WxOpenService;
@@ -104,6 +108,15 @@ public class WeixinConfiguration
 		wxMpService.setConfig(config);
 
 		return wxMpService;
+	}
+
+	@Bean
+	@ConditionalOnProperty("weixin.mp.app-id")
+	public WxMpMessageRouter getWxMpMessageRouter(List<WxMpMessageHandler> msgHandlers)
+	{
+		WxMpMessageRouterImpl router = new WxMpMessageRouterImpl(msgHandlers);
+
+		return router;
 	}
 
 	@Bean
