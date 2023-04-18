@@ -18,7 +18,7 @@ import com.mizhousoft.geo.model.Address;
  */
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = DemoApplication.class)
-public class GEOCoderTest
+public class GEOCoderServiceTest
 {
 	@Autowired
 	private GEOCoderService geoCoder;

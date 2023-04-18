@@ -15,3 +15,5 @@ dependency-reduced-pom.xml
 node_modules
 dist
 *.p8
+
+application.properties
