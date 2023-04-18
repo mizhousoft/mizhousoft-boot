@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
  * @version
  */
 @Component
-@ConfigurationProperties(prefix = "geo.tianditu")
-public class TiandituProperties
+@ConfigurationProperties(prefix = "geo.tmap")
+public class TMapProperties
 {
 	/**
 	 * 应用Key
