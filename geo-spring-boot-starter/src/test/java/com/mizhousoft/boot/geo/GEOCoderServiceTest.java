@@ -24,7 +24,7 @@ public class GEOCoderServiceTest
 	private GEOCoderService geoCoder;
 
 	@Test
-	public void test()
+	public void regeo()
 	{
 		try
 		{
