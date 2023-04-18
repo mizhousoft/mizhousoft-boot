@@ -7,9 +7,9 @@ import org.springframework.context.annotation.Configuration;
 
 import com.mizhousoft.boot.geo.properties.TiandituProperties;
 import com.mizhousoft.commons.restclient.service.RestClientService;
-import com.mizhousoft.geo.GEOCoder;
+import com.mizhousoft.geo.GEOCoderService;
 import com.mizhousoft.geo.GEOProfile;
-import com.mizhousoft.geo.tianditu.coder.TiandituGEOCoder;
+import com.mizhousoft.geo.tianditu.coder.TMapGEOCoderServiceImpl;
 
 /**
  * WeixinConfiguration
@@ -27,12 +27,12 @@ public class TiandituConfiguration
 
 	@Bean
 	@ConditionalOnProperty("geo.tianditu.app-key")
-	public GEOCoder getGEOCoder()
+	public GEOCoderService getGEOCoderService()
 	{
 		GEOProfile profile = new GEOProfile();
 		profile.setAppKey(tdtProperties.getAppKey());
 
-		TiandituGEOCoder geoCoder = new TiandituGEOCoder();
+		TMapGEOCoderServiceImpl geoCoder = new TMapGEOCoderServiceImpl();
 		geoCoder.setProfile(profile);
 		geoCoder.setRestClientService(restClientService);
 

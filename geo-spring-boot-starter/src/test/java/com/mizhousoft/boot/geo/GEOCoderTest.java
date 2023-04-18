@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.mizhousoft.geo.GEOCoder;
+import com.mizhousoft.geo.GEOCoderService;
 import com.mizhousoft.geo.GEOException;
 import com.mizhousoft.geo.model.Address;
 
@@ -21,7 +21,7 @@ import com.mizhousoft.geo.model.Address;
 public class GEOCoderTest
 {
 	@Autowired
-	private GEOCoder geoCoder;
+	private GEOCoderService geoCoder;
 
 	@Test
 	public void test()
