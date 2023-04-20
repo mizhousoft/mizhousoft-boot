@@ -1,4 +1,4 @@
-package com.mizhousoft.boot.sms;
+package com.mizhousoft.boot.weixin;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

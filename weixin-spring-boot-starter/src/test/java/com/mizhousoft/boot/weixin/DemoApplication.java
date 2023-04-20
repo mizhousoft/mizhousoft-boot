@@ -1,4 +1,4 @@
-package com.mizhousoft.boot.sms;
+package com.mizhousoft.boot.weixin;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
