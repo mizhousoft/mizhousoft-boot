@@ -1,5 +1,6 @@
 package com.mizhousoft.boot.restclient;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,6 +16,9 @@ import com.mizhousoft.commons.restclient.service.impl.HttpsRestClientServiceImpl
 @Configuration
 public class RestClientConfiguration
 {
+	@Autowired
+	private PoolProperties poolProperties;
+
 	@Bean
 	public RestClientService getRestClientService(TruststoreLoader truststoreLoader)
 	{
@@ -23,7 +27,7 @@ public class RestClientConfiguration
 		HttpsRestClientServiceImpl restClientService = new HttpsRestClientServiceImpl();
 		restClientService.setTruststoreLoaders(truststoreLoaders);
 
-		restClientService.init();
+		restClientService.init(poolProperties.getConnectTimeout(), poolProperties.getReadTimeout());
 
 		return restClientService;
 	}

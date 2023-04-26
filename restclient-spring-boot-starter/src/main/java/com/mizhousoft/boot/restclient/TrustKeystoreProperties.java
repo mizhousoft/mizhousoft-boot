@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @ConfigurationProperties(prefix = "restclient.trust.keystore")
-public class RestClientProperties
+public class TrustKeystoreProperties
 {
 	// 文件路径，为空的话，加载内置的信任文件
 	private volatile String path;

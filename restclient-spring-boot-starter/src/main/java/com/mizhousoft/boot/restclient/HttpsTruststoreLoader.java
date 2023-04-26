@@ -25,7 +25,7 @@ public class HttpsTruststoreLoader implements TruststoreLoader
 	private ResourceLoader resourceLoader;
 
 	@Autowired
-	private RestClientProperties properties;
+	private TrustKeystoreProperties properties;
 
 	/**
 	 * {@inheritDoc}
