@@ -30,6 +30,7 @@ import com.mizhousoft.weixin.payment.service.impl.WxPayHttpClientImpl;
 import com.mizhousoft.weixin.payment.service.impl.WxPaymentServiceImpl;
 import com.mizhousoft.weixin.transfer.service.MerchantTransferService;
 import com.mizhousoft.weixin.transfer.service.impl.MerchantTransferServiceImpl;
+import com.mizhousoft.weixin.util.PemLoader;
 
 /**
  * WeixinConfiguration
@@ -115,6 +116,7 @@ public class WeixinPayConfiguration
 			config.setMchId(item.getMchId());
 			config.setCertSerialNumber(item.getCertSerialNumber());
 			config.setCipherService(cipherService);
+			config.setEndpoint(item.getEndpoint());
 			config.setPayNotifyUrl(item.getNotifyUrl());
 			config.setRefundNotifyUrl(item.getRefundNotifyUrl());
 

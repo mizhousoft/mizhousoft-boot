@@ -40,6 +40,11 @@ public class WeixinPayProperties
 	private volatile List<String> certPemFilePaths;
 
 	/**
+	 * endpoint
+	 */
+	private volatile String endpoint = "https://api.mch.weixin.qq.com";
+
+	/**
 	 * 支付通知url
 	 */
 	private volatile String notifyUrl;
@@ -167,6 +172,26 @@ public class WeixinPayProperties
 	public void setCertPemFilePaths(List<String> certPemFilePaths)
 	{
 		this.certPemFilePaths = certPemFilePaths;
+	}
+
+	/**
+	 * 获取endpoint
+	 * 
+	 * @return
+	 */
+	public String getEndpoint()
+	{
+		return endpoint;
+	}
+
+	/**
+	 * 设置endpoint
+	 * 
+	 * @param endpoint
+	 */
+	public void setEndpoint(String endpoint)
+	{
+		this.endpoint = endpoint;
 	}
 
 	/**
