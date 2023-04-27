@@ -29,7 +29,6 @@ import com.mizhousoft.weixin.payment.service.impl.WxPayHttpClientImpl;
 import com.mizhousoft.weixin.payment.service.impl.WxPaymentServiceImpl;
 import com.mizhousoft.weixin.transfer.service.MerchantTransferService;
 import com.mizhousoft.weixin.transfer.service.impl.MerchantTransferServiceImpl;
-import com.mizhousoft.weixin.util.PemUtils;
 
 /**
  * WeixinConfiguration
@@ -95,14 +94,14 @@ public class WeixinPayConfiguration
 				Resource resource = resourceLoader.getResource("classpath:" + certPemFilePath);
 				String certPemPath = resource.getFile().getAbsolutePath();
 
-				X509Certificate certificate = PemUtils.loadX509FromPath(certPemPath);
+				X509Certificate certificate = PemLoader.loadX509FromPath(certPemPath);
 				certificates.add(certificate);
 			}
 			CertificateProvider certificateProvider = new CertificateProviderImpl(certificates);
 
 			Resource resource = resourceLoader.getResource("classpath:" + item.getPrivateKeyPath());
 			String privKeyPath = resource.getFile().getAbsolutePath();
-			PrivateKey privateKey = PemUtils.loadPrivateKeyFromPath(privKeyPath);
+			PrivateKey privateKey = PemLoader.loadPrivateKeyFromPath(privKeyPath);
 
 			String serialNumber = item.getCertSerialNumber();
 			X509Certificate certificate = certificateProvider.getCertificate(serialNumber);
