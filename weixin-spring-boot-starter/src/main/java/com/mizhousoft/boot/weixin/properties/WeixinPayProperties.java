@@ -2,11 +2,16 @@ package com.mizhousoft.boot.weixin.properties;
 
 import java.util.List;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
+
 /**
  * 配置
  *
  * @version
  */
+@Component
+@ConfigurationProperties(prefix = "weixin.pay.merchants")
 public class WeixinPayProperties
 {
 	/**

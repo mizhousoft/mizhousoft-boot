@@ -50,7 +50,7 @@ public class WeixinPayConfiguration
 	private ResourceLoader resourceLoader;
 
 	@Bean
-	@ConditionalOnProperty("weixin.pay[0].identifier")
+	@ConditionalOnProperty("weixin.pay.merchants[0].identifier")
 	public WxPaymentService getWxPaymentService(WxPayConfigService configService, WxPayHttpClient httpClient)
 	{
 		WxPaymentServiceImpl paymentService = new WxPaymentServiceImpl();
@@ -61,7 +61,7 @@ public class WeixinPayConfiguration
 	}
 
 	@Bean
-	@ConditionalOnProperty("weixin.pay[0].identifier")
+	@ConditionalOnProperty("weixin.pay.merchants[0].identifier")
 	public MerchantTransferService getMerchantTransferService(WxPayConfigService configService, WxPayHttpClient httpClient)
 	{
 		MerchantTransferServiceImpl merchantTransferService = new MerchantTransferServiceImpl();
@@ -72,7 +72,7 @@ public class WeixinPayConfiguration
 	}
 
 	@Bean
-	@ConditionalOnProperty("weixin.pay[0].identifier")
+	@ConditionalOnProperty("weixin.pay.merchants[0].identifier")
 	public WxPayHttpClient getWxPayHttpClient()
 	{
 		WxPayHttpClientImpl httpClient = new WxPayHttpClientImpl();
@@ -82,12 +82,12 @@ public class WeixinPayConfiguration
 	}
 
 	@Bean
-	@ConditionalOnProperty("weixin.pay[0].identifier")
+	@ConditionalOnProperty("weixin.pay.merchants[0].identifier")
 	public WxPayConfigService getWxPayConfigService() throws IOException, WXException
 	{
 		WxPayConfigService configService = new WxPayConfigServiceImpl();
 
-		List<WeixinPayProperties> list = listProperties.getList();
+		List<WeixinPayProperties> list = listProperties.getMerchants();
 		for (WeixinPayProperties item : list)
 		{
 			List<X509Certificate> certificates = new ArrayList<>(10);

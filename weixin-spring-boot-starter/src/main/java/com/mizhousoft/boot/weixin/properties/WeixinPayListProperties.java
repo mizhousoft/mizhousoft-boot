@@ -14,25 +14,25 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "weixin.pay")
 public class WeixinPayListProperties
 {
-	private List<WeixinPayProperties> list;
+	private List<WeixinPayProperties> merchants;
 
 	/**
-	 * 获取list
+	 * 获取merchants
 	 * 
 	 * @return
 	 */
-	public List<WeixinPayProperties> getList()
+	public List<WeixinPayProperties> getMerchants()
 	{
-		return list;
+		return merchants;
 	}
 
 	/**
-	 * 设置list
+	 * 设置merchants
 	 * 
-	 * @param list
+	 * @param merchants
 	 */
-	public void setList(List<WeixinPayProperties> list)
+	public void setMerchants(List<WeixinPayProperties> merchants)
 	{
-		this.list = list;
+		this.merchants = merchants;
 	}
 }

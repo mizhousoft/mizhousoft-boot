@@ -36,7 +36,7 @@ public class WeixinPropertiesTest
 	@Test
 	public void test()
 	{
-		Assertions.assertEquals(1, payListProperties.getList());
+		Assertions.assertEquals(1, payListProperties.getMerchants().size());
 
 		Assertions.assertEquals("wx461216ssssss", miniProperties.getAppId());
 
