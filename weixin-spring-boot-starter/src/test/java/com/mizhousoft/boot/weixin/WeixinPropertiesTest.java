@@ -22,7 +22,7 @@ import com.mizhousoft.boot.weixin.properties.WeixinPayListProperties;
 public class WeixinPropertiesTest
 {
 	@Autowired
-	private WeixinPayListProperties payProperties;
+	private WeixinPayListProperties payListProperties;
 
 	@Autowired
 	private WeixinMiniProperties miniProperties;
@@ -36,7 +36,7 @@ public class WeixinPropertiesTest
 	@Test
 	public void test()
 	{
-		Assertions.assertEquals("1603741059", payProperties.getMchId());
+		Assertions.assertEquals(1, payListProperties.getList());
 
 		Assertions.assertEquals("wx461216ssssss", miniProperties.getAppId());
 

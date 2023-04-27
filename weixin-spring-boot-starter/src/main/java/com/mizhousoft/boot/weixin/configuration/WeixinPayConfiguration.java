@@ -15,17 +15,17 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 
 import com.mizhousoft.boot.weixin.properties.WeixinPayListProperties;
+import com.mizhousoft.boot.weixin.properties.WeixinPayProperties;
 import com.mizhousoft.commons.restclient.service.RestClientService;
 import com.mizhousoft.weixin.certificate.CertificateProvider;
 import com.mizhousoft.weixin.certificate.impl.CertificateProviderImpl;
-import com.mizhousoft.weixin.cipher.WxPayVerifier;
-import com.mizhousoft.weixin.cipher.impl.RSAPrivacyDecryptor;
-import com.mizhousoft.weixin.cipher.impl.RSAPrivacyEncryptor;
-import com.mizhousoft.weixin.cipher.impl.WxPayRASVerifier;
 import com.mizhousoft.weixin.common.WXException;
-import com.mizhousoft.weixin.credential.WxPayCredential;
 import com.mizhousoft.weixin.payment.WxPayConfig;
+import com.mizhousoft.weixin.payment.service.WxPayConfigService;
+import com.mizhousoft.weixin.payment.service.WxPayHttpClient;
 import com.mizhousoft.weixin.payment.service.WxPaymentService;
+import com.mizhousoft.weixin.payment.service.impl.WxPayConfigServiceImpl;
+import com.mizhousoft.weixin.payment.service.impl.WxPayHttpClientImpl;
 import com.mizhousoft.weixin.payment.service.impl.WxPaymentServiceImpl;
 import com.mizhousoft.weixin.transfer.service.MerchantTransferService;
 import com.mizhousoft.weixin.transfer.service.impl.MerchantTransferServiceImpl;
@@ -40,7 +40,7 @@ import com.mizhousoft.weixin.util.PemUtils;
 public class WeixinPayConfiguration
 {
 	@Autowired
-	private WeixinPayListProperties payProperties;
+	private WeixinPayListProperties listProperties;
 
 	@Autowired
 	private RestClientService restClientService;
@@ -48,61 +48,49 @@ public class WeixinPayConfiguration
 	@Autowired
 	private ResourceLoader resourceLoader;
 
-	private WxPayConfig wxPayConfig;
-
 	@Bean
-	@ConditionalOnProperty("weixin.pay.mch-id")
-	public WxPaymentService getWxPaymentService(WxPayCredential credential, WxPayVerifier verifier) throws WXException, IOException
+	@ConditionalOnProperty("weixin.pay[0].identifier")
+	public WxPaymentService getWxPaymentService(WxPayConfigService configService, WxPayHttpClient httpClient)
 	{
-		WxPayConfig config = getWxPayConfig();
+		WxPaymentServiceImpl paymentService = new WxPaymentServiceImpl();
+		paymentService.setHttpClient(httpClient);
+		paymentService.setConfigService(configService);
 
-		WxPaymentServiceImpl wxPayService = new WxPaymentServiceImpl();
-		wxPayService.setRestClientService(restClientService);
-		wxPayService.setPayConfig(config);
-		wxPayService.setVerifier(verifier);
-
-		return wxPayService;
+		return paymentService;
 	}
 
 	@Bean
-	@ConditionalOnProperty("weixin.pay.mch-id")
-	public MerchantTransferService getMerchantTransferService(WxPayCredential credential, WxPayVerifier verifier,
-	        CertificateProvider certificateProvider) throws WXException, IOException
+	@ConditionalOnProperty("weixin.pay[0].identifier")
+	public MerchantTransferService getMerchantTransferService(WxPayConfigService configService, WxPayHttpClient httpClient)
 	{
-		WxPayConfig config = getWxPayConfig();
-
-		PrivateKey privateKey = PemUtils.loadPrivateKeyFromPath(config.getPrivateKeyPath());
-		RSAPrivacyDecryptor privacyDecryptor = new RSAPrivacyDecryptor(privateKey);
-
-		String serialNumber = config.getCertSerialNumber();
-		X509Certificate certificate = certificateProvider.getCertificate(serialNumber);
-		RSAPrivacyEncryptor privacyEncryptor = new RSAPrivacyEncryptor(certificate.getPublicKey(), serialNumber);
-
 		MerchantTransferServiceImpl merchantTransferService = new MerchantTransferServiceImpl();
-		merchantTransferService.setRestClientService(restClientService);
-		merchantTransferService.setCredential(credential);
-		merchantTransferService.setVerifier(verifier);
-		merchantTransferService.setDecryptor(privacyDecryptor);
-		merchantTransferService.setEncryptor(privacyEncryptor);
+		merchantTransferService.setHttpClient(httpClient);
+		merchantTransferService.setConfigService(configService);
 
 		return merchantTransferService;
 	}
 
 	@Bean
-	@ConditionalOnProperty("weixin.pay.mch-id")
-	public WxPayVerifier getWxPayVerifier(CertificateProvider certificateProvider) throws WXException, IOException
+	@ConditionalOnProperty("weixin.pay[0].identifier")
+	public WxPayHttpClient getWxPayHttpClient()
 	{
-		WxPayVerifier payVerifier = new WxPayRASVerifier(certificateProvider);
+		WxPayHttpClientImpl httpClient = new WxPayHttpClientImpl();
+		httpClient.setRestClientService(restClientService);
 
-		return payVerifier;
+		return httpClient;
 	}
 
-	private synchronized WxPayConfig getWxPayConfig() throws IOException, WXException
+	@Bean
+	@ConditionalOnProperty("weixin.pay[0].identifier")
+	public WxPayConfigService getWxPayConfigService() throws IOException, WXException
 	{
-		if (null == wxPayConfig)
+		WxPayConfigService configService = new WxPayConfigServiceImpl();
+
+		List<WeixinPayProperties> list = listProperties.getList();
+		for (WeixinPayProperties item : list)
 		{
 			List<X509Certificate> certificates = new ArrayList<>(10);
-			for (String certPemFilePath : payProperties.getCertPemFilePaths())
+			for (String certPemFilePath : item.getCertPemFilePaths())
 			{
 				Resource resource = resourceLoader.getResource("classpath:" + certPemFilePath);
 				String certPemPath = resource.getFile().getAbsolutePath();
@@ -110,30 +98,30 @@ public class WeixinPayConfiguration
 				X509Certificate certificate = PemUtils.loadX509FromPath(certPemPath);
 				certificates.add(certificate);
 			}
-
 			CertificateProvider certificateProvider = new CertificateProviderImpl(certificates);
 
-			Resource resource = resourceLoader.getResource("classpath:" + payProperties.getPrivateKeyPath());
+			Resource resource = resourceLoader.getResource("classpath:" + item.getPrivateKeyPath());
 			String privKeyPath = resource.getFile().getAbsolutePath();
 			PrivateKey privateKey = PemUtils.loadPrivateKeyFromPath(privKeyPath);
 
-			String serialNumber = payProperties.getCertSerialNumber();
+			String serialNumber = item.getCertSerialNumber();
 			X509Certificate certificate = certificateProvider.getCertificate(serialNumber);
 			PublicKey publicKey = certificate.getPublicKey();
 
 			WxPayConfig config = new WxPayConfig();
-			config.setMchId(payProperties.getMchId());
-			config.setApiV3Key(payProperties.getApiV3Key());
-			config.setCertSerialNumber(payProperties.getCertSerialNumber());
+			config.setIdentifier(item.getIdentifier());
+			config.setMchId(item.getMchId());
+			config.setApiV3Key(item.getApiV3Key());
+			config.setCertSerialNumber(item.getCertSerialNumber());
 			config.setPrivateKey(privateKey);
 			config.setPublicKey(publicKey);
 			config.setCertProvider(certificateProvider);
-			config.setPayNotifyUrl(payProperties.getNotifyUrl());
-			config.setRefundNotifyUrl(payProperties.getRefundNotifyUrl());
+			config.setPayNotifyUrl(item.getNotifyUrl());
+			config.setRefundNotifyUrl(item.getRefundNotifyUrl());
 
-			this.wxPayConfig = config;
+			configService.addConfig(config);
 		}
 
-		return this.wxPayConfig;
+		return configService;
 	}
 }
