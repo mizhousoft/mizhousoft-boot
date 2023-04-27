@@ -19,6 +19,12 @@ import com.mizhousoft.boot.weixin.properties.WeixinPayProperties;
 import com.mizhousoft.commons.restclient.service.RestClientService;
 import com.mizhousoft.weixin.certificate.CertificateProvider;
 import com.mizhousoft.weixin.certificate.impl.CertificateProviderImpl;
+import com.mizhousoft.weixin.cipher.PrivacyDecryptor;
+import com.mizhousoft.weixin.cipher.PrivacyEncryptor;
+import com.mizhousoft.weixin.cipher.Signer;
+import com.mizhousoft.weixin.cipher.impl.RSAPrivacyDecryptor;
+import com.mizhousoft.weixin.cipher.impl.RSAPrivacyEncryptor;
+import com.mizhousoft.weixin.cipher.impl.RSASigner;
 import com.mizhousoft.weixin.common.WXException;
 import com.mizhousoft.weixin.payment.WxPayConfig;
 import com.mizhousoft.weixin.payment.service.WxPayConfigService;
@@ -103,17 +109,23 @@ public class WeixinPayConfiguration
 			String privKeyPath = resource.getFile().getAbsolutePath();
 			PrivateKey privateKey = PemLoader.loadPrivateKeyFromPath(privKeyPath);
 
+			Signer signer = new RSASigner(privateKey);
+			PrivacyDecryptor decryptor = new RSAPrivacyDecryptor(privateKey);
+
 			String serialNumber = item.getCertSerialNumber();
 			X509Certificate certificate = certificateProvider.getCertificate(serialNumber);
 			PublicKey publicKey = certificate.getPublicKey();
+
+			PrivacyEncryptor encryptor = new RSAPrivacyEncryptor(publicKey);
 
 			WxPayConfig config = new WxPayConfig();
 			config.setIdentifier(item.getIdentifier());
 			config.setMchId(item.getMchId());
 			config.setApiV3Key(item.getApiV3Key());
 			config.setCertSerialNumber(item.getCertSerialNumber());
-			config.setPrivateKey(privateKey);
-			config.setPublicKey(publicKey);
+			config.setDecryptor(decryptor);
+			config.setEncryptor(encryptor);
+			config.setSigner(signer);
 			config.setCertProvider(certificateProvider);
 			config.setPayNotifyUrl(item.getNotifyUrl());
 			config.setRefundNotifyUrl(item.getRefundNotifyUrl());
