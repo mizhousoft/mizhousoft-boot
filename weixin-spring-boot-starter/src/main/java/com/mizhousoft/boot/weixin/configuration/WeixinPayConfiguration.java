@@ -108,15 +108,13 @@ public class WeixinPayConfiguration
 			X509Certificate certificate = certificateProvider.getCertificate(serialNumber);
 			PublicKey publicKey = certificate.getPublicKey();
 
-			CipherServiceImpl cipherService = new CipherServiceImpl(privateKey, publicKey, certificateProvider);
+			CipherServiceImpl cipherService = new CipherServiceImpl(item.getApiV3Key(), privateKey, publicKey, certificateProvider);
 
 			WxPayConfig config = new WxPayConfig();
 			config.setIdentifier(item.getIdentifier());
 			config.setMchId(item.getMchId());
-			config.setApiV3Key(item.getApiV3Key());
 			config.setCertSerialNumber(item.getCertSerialNumber());
 			config.setCipherService(cipherService);
-			config.setCertProvider(certificateProvider);
 			config.setPayNotifyUrl(item.getNotifyUrl());
 			config.setRefundNotifyUrl(item.getRefundNotifyUrl());
 
