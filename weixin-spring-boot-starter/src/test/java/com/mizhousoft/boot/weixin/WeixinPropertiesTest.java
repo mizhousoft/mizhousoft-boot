@@ -10,7 +10,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import com.mizhousoft.boot.weixin.properties.WeixinMPProperties;
 import com.mizhousoft.boot.weixin.properties.WeixinMiniProperties;
 import com.mizhousoft.boot.weixin.properties.WeixinOpenProperties;
-import com.mizhousoft.boot.weixin.properties.WeixinPayProperties;
+import com.mizhousoft.boot.weixin.properties.WeixinPayListProperties;
 
 /**
  * TestAliyunSmsService Test
@@ -22,7 +22,7 @@ import com.mizhousoft.boot.weixin.properties.WeixinPayProperties;
 public class WeixinPropertiesTest
 {
 	@Autowired
-	private WeixinPayProperties payProperties;
+	private WeixinPayListProperties payProperties;
 
 	@Autowired
 	private WeixinMiniProperties miniProperties;

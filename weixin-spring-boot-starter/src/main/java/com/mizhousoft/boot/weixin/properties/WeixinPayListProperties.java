@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @ConfigurationProperties(prefix = "weixin.pay")
-public class WeixinPayProperties
+public class WeixinPayListProperties
 {
 	/**
 	 * 商户ID
