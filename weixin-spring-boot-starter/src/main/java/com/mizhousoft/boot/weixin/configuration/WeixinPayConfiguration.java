@@ -90,31 +90,34 @@ public class WeixinPayConfiguration
 		List<WeixinPayProperties> list = listProperties.getMerchants();
 		for (WeixinPayProperties item : list)
 		{
-			List<X509Certificate> certificates = new ArrayList<>(10);
-			for (String certPemFilePath : item.getCertPemFilePaths())
-			{
-				Resource resource = resourceLoader.getResource("classpath:" + certPemFilePath);
-				String certPemPath = resource.getFile().getAbsolutePath();
+			List<X509Certificate> certificates = new ArrayList<>(2);
 
-				X509Certificate certificate = PemLoader.loadX509FromPath(certPemPath);
-				certificates.add(certificate);
-			}
+			Resource resource = resourceLoader.getResource("classpath:" + item.getMchCertFilePath());
+			String certPemPath = resource.getFile().getAbsolutePath();
+			X509Certificate certificate = PemLoader.loadX509FromPath(certPemPath);
+			String mchCertSerialNumber = PemLoader.getSerialNumber(certificate);
+			certificates.add(certificate);
+
+			resource = resourceLoader.getResource("classpath:" + item.getPlatformCertFilePath());
+			certPemPath = resource.getFile().getAbsolutePath();
+			certificate = PemLoader.loadX509FromPath(certPemPath);
+			String platformCertSerialNumber = PemLoader.getSerialNumber(certificate);
+			PublicKey platformPubKey = certificate.getPublicKey();
+			certificates.add(certificate);
+
 			CertificateProvider certificateProvider = new CertificateProviderImpl(certificates);
 
-			Resource resource = resourceLoader.getResource("classpath:" + item.getPrivateKeyPath());
+			resource = resourceLoader.getResource("classpath:" + item.getMchPrivFilePath());
 			String privKeyPath = resource.getFile().getAbsolutePath();
 			PrivateKey privateKey = PemLoader.loadPrivateKeyFromPath(privKeyPath);
 
-			String serialNumber = item.getCertSerialNumber();
-			X509Certificate certificate = certificateProvider.getCertificate(serialNumber);
-			PublicKey publicKey = certificate.getPublicKey();
-
-			CipherServiceImpl cipherService = new CipherServiceImpl(item.getApiV3Key(), privateKey, publicKey, certificateProvider);
+			CipherServiceImpl cipherService = new CipherServiceImpl(item.getApiV3Key(), privateKey, platformPubKey, certificateProvider);
 
 			WxPayConfig config = new WxPayConfig();
 			config.setIdentifier(item.getIdentifier());
 			config.setMchId(item.getMchId());
-			config.setCertSerialNumber(item.getCertSerialNumber());
+			config.setMchCertSerialNumber(mchCertSerialNumber);
+			config.setPlatformCertSerialNumber(platformCertSerialNumber);
 			config.setCipherService(cipherService);
 			config.setEndpoint(item.getEndpoint());
 			config.setPayNotifyUrl(item.getNotifyUrl());

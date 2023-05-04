@@ -1,7 +1,5 @@
 package com.mizhousoft.boot.weixin.properties;
 
-import java.util.List;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -30,19 +28,19 @@ public class WeixinPayProperties
 	private volatile String apiV3Key;
 
 	/**
-	 * 证书序列号
+	 * 商户私钥路径
 	 */
-	private volatile String certSerialNumber;
+	private volatile String mchPrivFilePath;
 
 	/**
-	 * 私钥路径
+	 * 商户证书路径
 	 */
-	private volatile String privateKeyPath;
+	private volatile String mchCertFilePath;
 
 	/**
-	 * 证书路径
+	 * 平台商户证书路径
 	 */
-	private volatile List<String> certPemFilePaths;
+	private volatile String platformCertFilePath;
 
 	/**
 	 * endpoint
@@ -120,63 +118,63 @@ public class WeixinPayProperties
 	}
 
 	/**
-	 * 获取certSerialNumber
+	 * 获取mchPrivFilePath
 	 * 
 	 * @return
 	 */
-	public String getCertSerialNumber()
+	public String getMchPrivFilePath()
 	{
-		return certSerialNumber;
+		return mchPrivFilePath;
 	}
 
 	/**
-	 * 设置certSerialNumber
+	 * 设置mchPrivFilePath
 	 * 
-	 * @param certSerialNumber
+	 * @param mchPrivFilePath
 	 */
-	public void setCertSerialNumber(String certSerialNumber)
+	public void setMchPrivFilePath(String mchPrivFilePath)
 	{
-		this.certSerialNumber = certSerialNumber;
+		this.mchPrivFilePath = mchPrivFilePath;
 	}
 
 	/**
-	 * 获取privateKeyPath
-	 * 
-	 * @return
-	 */
-	public String getPrivateKeyPath()
-	{
-		return privateKeyPath;
-	}
-
-	/**
-	 * 设置privateKeyPath
-	 * 
-	 * @param privateKeyPath
-	 */
-	public void setPrivateKeyPath(String privateKeyPath)
-	{
-		this.privateKeyPath = privateKeyPath;
-	}
-
-	/**
-	 * 获取certPemFilePaths
+	 * 获取mchCertFilePath
 	 * 
 	 * @return
 	 */
-	public List<String> getCertPemFilePaths()
+	public String getMchCertFilePath()
 	{
-		return certPemFilePaths;
+		return mchCertFilePath;
 	}
 
 	/**
-	 * 设置certPemFilePaths
+	 * 设置mchCertFilePath
 	 * 
-	 * @param certPemFilePaths
+	 * @param mchCertFilePath
 	 */
-	public void setCertPemFilePaths(List<String> certPemFilePaths)
+	public void setMchCertFilePath(String mchCertFilePath)
 	{
-		this.certPemFilePaths = certPemFilePaths;
+		this.mchCertFilePath = mchCertFilePath;
+	}
+
+	/**
+	 * 获取platformCertFilePath
+	 * 
+	 * @return
+	 */
+	public String getPlatformCertFilePath()
+	{
+		return platformCertFilePath;
+	}
+
+	/**
+	 * 设置platformCertFilePath
+	 * 
+	 * @param platformCertFilePath
+	 */
+	public void setPlatformCertFilePath(String platformCertFilePath)
+	{
+		this.platformCertFilePath = platformCertFilePath;
 	}
 
 	/**
