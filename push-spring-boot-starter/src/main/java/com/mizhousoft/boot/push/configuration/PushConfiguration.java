@@ -86,7 +86,7 @@ public class PushConfiguration
 	}
 
 	@PreDestroy
-	public void destory()
+	public void destroy()
 	{
 		if (null != unifiedPushService)
 		{

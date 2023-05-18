@@ -227,7 +227,7 @@ public class DefaultQuartzScheduler implements QuartzScheduler
 	}
 
 	@PreDestroy
-	public void destory()
+	public void destroy()
 	{
 		if (null != scheduler)
 		{

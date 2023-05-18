@@ -13,7 +13,7 @@ import com.mizhousoft.boot.weixin.properties.WeixinOpenProperties;
 import com.mizhousoft.boot.weixin.properties.WeixinPayListProperties;
 
 /**
- * TestAliyunSmsService Test
+ * WeixinPayListProperties Test
  *
  * @version
  */

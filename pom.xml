@@ -36,6 +36,7 @@
 		<module>mail-spring-boot-starter</module>
 		<module>weixin-spring-boot-starter</module>
 		<module>geo-spring-boot-starter</module>
+		<module>tencent-oss-spring-boot-starter</module>
 	</modules>
 
 </project>
