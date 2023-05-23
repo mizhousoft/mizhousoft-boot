@@ -233,7 +233,7 @@ public class DefaultQuartzScheduler implements QuartzScheduler
 		{
 			try
 			{
-				scheduler.shutdown();
+				scheduler.shutdown(true);
 
 				LOG.info("Shutdown quartz successfully.");
 			}
