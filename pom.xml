@@ -21,7 +21,6 @@
 		<cloud.sdk.version>1.7.0-SNAPSHOT</cloud.sdk.version>
 		<push.version>1.7.0-SNAPSHOT</push.version>
 		<weixin.version>1.7.0-SNAPSHOT</weixin.version>
-		<geo.version>1.0.0-SNAPSHOT</geo.version>
 		<mizhousoft.boot.version>1.7.0-SNAPSHOT</mizhousoft.boot.version>
 	</properties>
 
@@ -35,7 +34,6 @@
 		<module>authentication-spring-boot-starter</module>
 		<module>mail-spring-boot-starter</module>
 		<module>weixin-spring-boot-starter</module>
-		<module>geo-spring-boot-starter</module>
 		<module>tencent-oss-spring-boot-starter</module>
 	</modules>
 
