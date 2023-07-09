@@ -30,5 +30,5 @@ public interface SecurityConstants
 	/**
 	 * 默认Session闲时超时时间
 	 */
-	int DEFAULT_SESSION_IDLE_TIMEOUT = 10;
+	int DEFAULT_SESSION_IDLE_TIMEOUT = 30;
 }
