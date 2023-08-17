@@ -1,6 +1,6 @@
 package com.mizhousoft.boot.quartz;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 /**
@@ -35,5 +35,5 @@ public interface OnceJobExecutor
 	 * @param context
 	 * @throws QuartzException
 	 */
-	void scheduleOnceJob(Date startDate, Map<String, Object> dataMap, JobContext context) throws QuartzException;
+	void scheduleOnceJob(LocalDateTime startDate, Map<String, Object> dataMap, JobContext context) throws QuartzException;
 }

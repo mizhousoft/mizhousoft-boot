@@ -1,10 +1,10 @@
 package com.mizhousoft.boot.quartz.executor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
@@ -19,6 +19,7 @@ import com.mizhousoft.boot.quartz.JobContext;
 import com.mizhousoft.boot.quartz.OnceJobExecutor;
 import com.mizhousoft.boot.quartz.QuartzException;
 import com.mizhousoft.boot.quartz.SchedulerConstants;
+import com.mizhousoft.commons.lang.LocalDateTimeUtils;
 
 /**
  * 一次性任务执行器
@@ -46,7 +47,7 @@ public class OnceJobExecutorImpl extends AbstractJobExecutor implements OnceJobE
 	@Override
 	public void scheduleOnceJob(JobContext context) throws QuartzException
 	{
-		scheduleOnceJob(new Date(), null, context);
+		scheduleOnceJob(LocalDateTime.now(), null, context);
 	}
 
 	/**
@@ -55,14 +56,14 @@ public class OnceJobExecutorImpl extends AbstractJobExecutor implements OnceJobE
 	@Override
 	public void scheduleOnceJob(Map<String, Object> dataMap, JobContext context) throws QuartzException
 	{
-		scheduleOnceJob(new Date(), dataMap, context);
+		scheduleOnceJob(LocalDateTime.now(), dataMap, context);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void scheduleOnceJob(Date startDate, Map<String, Object> dataMap, JobContext context) throws QuartzException
+	public void scheduleOnceJob(LocalDateTime startDate, Map<String, Object> dataMap, JobContext context) throws QuartzException
 	{
 		try
 		{
@@ -77,12 +78,13 @@ public class OnceJobExecutorImpl extends AbstractJobExecutor implements OnceJobE
 			dataMap.put(SchedulerConstants.APPLICATION_CONTEXT, applicationContext);
 			jobDetail.getJobDataMap().putAll(dataMap);
 
-			Trigger trigger = TriggerBuilder.newTrigger().startAt(startDate).build();
+			Date date = LocalDateTimeUtils.toDate(startDate);
+			Trigger trigger = TriggerBuilder.newTrigger().startAt(date).build();
 
 			scheduler.scheduleJob(jobDetail, trigger);
 
 			LOG.info("Schedule once job {} successfully, start at {}.", jobDetail.getKey().toString(),
-			        DateFormatUtils.format(startDate, "yyyy-MM-dd HH:mm:ss"));
+			        LocalDateTimeUtils.formatYmdhms(startDate));
 		}
 		catch (SchedulerException e)
 		{

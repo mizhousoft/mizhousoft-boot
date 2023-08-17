@@ -1,6 +1,6 @@
 package com.mizhousoft.boot.quartz;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -34,7 +34,7 @@ public class OnceJobExecutorTest
 			Map<String, Object> dataMap = new HashMap<>(1);
 			dataMap.put("student", student);
 
-			Date startDate = new Date(System.currentTimeMillis() + 5000);
+			LocalDateTime startDate = LocalDateTime.now().plusSeconds(5);
 
 			JobContext jobContext = JobContextBuilder.newJobContext(HelloJobExecution.class).withJobIdentity("test").build();
 			quartzScheduler.scheduleOnceJob(startDate, dataMap, jobContext);

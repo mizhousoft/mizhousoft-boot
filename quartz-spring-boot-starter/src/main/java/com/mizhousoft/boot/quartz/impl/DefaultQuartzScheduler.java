@@ -1,6 +1,6 @@
 package com.mizhousoft.boot.quartz.impl;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -76,7 +76,7 @@ public class DefaultQuartzScheduler implements QuartzScheduler
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void scheduleOnceJob(Date startDate, Map<String, Object> dataMap, JobContext context) throws QuartzException
+	public void scheduleOnceJob(LocalDateTime startDate, Map<String, Object> dataMap, JobContext context) throws QuartzException
 	{
 		onceJobScheduler.scheduleOnceJob(startDate, dataMap, context);
 	}
