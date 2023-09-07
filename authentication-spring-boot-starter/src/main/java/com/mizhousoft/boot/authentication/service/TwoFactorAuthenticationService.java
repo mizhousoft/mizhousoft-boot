@@ -1,6 +1,6 @@
 package com.mizhousoft.boot.authentication.service;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import com.mizhousoft.boot.authentication.AccountDetails;
 
@@ -19,5 +19,5 @@ public interface TwoFactorAuthenticationService
 	 * @param lastAccessTime
 	 * @return
 	 */
-	boolean determineInternalAuthcPass(AccountDetails accountDetails, String lastAccessIpAddr, Date lastAccessTime);
+	boolean determineInternalAuthcPass(AccountDetails accountDetails, String lastAccessIpAddr, LocalDateTime lastAccessTime);
 }
