@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.mizhousoft.commons.json.JSONException;
+import com.mizhousoft.push.MessageCategory;
 import com.mizhousoft.push.action.ClickAction;
 import com.mizhousoft.push.action.IntentClickAction;
 import com.mizhousoft.push.request.NotificationRequest;
@@ -32,10 +33,12 @@ public abstract class NotificationBuilder
 			userId = userId + 1;
 		}
 
-		NotificationRequest request = new NotificationRequest(tokenMap);
+		NotificationRequest request = new NotificationRequest();
+		request.setTokenMap(tokenMap);
 		request.setTitle(TITLE);
 		request.setBody(BODY);
 		request.setChannelId(CHANNEL_ID);
+		request.setCategory(MessageCategory.CATEGORY_SOCIAL);
 
 		ClickAction clickAction = new IntentClickAction();
 
