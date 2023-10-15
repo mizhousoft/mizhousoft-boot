@@ -18,9 +18,6 @@
 
 	<properties>
 		<commons.version>1.7.0-SNAPSHOT</commons.version>
-		<cloud.sdk.version>1.7.0-SNAPSHOT</cloud.sdk.version>
-		<push.version>1.7.0-SNAPSHOT</push.version>
-		<weixin.version>1.7.0-SNAPSHOT</weixin.version>
 		<mizhousoft.boot.version>1.7.0-SNAPSHOT</mizhousoft.boot.version>
 	</properties>
 
@@ -29,11 +26,8 @@
 		<module>restclient-spring-boot-starter</module>
 		<module>driver-spring-boot-starter</module>
 		<module>quartz-spring-boot-starter</module>
-		<module>push-spring-boot-starter</module>
-		<module>sms-spring-boot-starter</module>
 		<module>authentication-spring-boot-starter</module>
 		<module>mail-spring-boot-starter</module>
-		<module>weixin-spring-boot-starter</module>
 	</modules>
 
 </project>
