@@ -1,13 +1,13 @@
 package com.mizhousoft.boot.authentication.util;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.web.util.WebUtils;
 import org.springframework.http.MediaType;
 
 import com.mizhousoft.boot.authentication.SecurityConstants;
+
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * WEB工具类

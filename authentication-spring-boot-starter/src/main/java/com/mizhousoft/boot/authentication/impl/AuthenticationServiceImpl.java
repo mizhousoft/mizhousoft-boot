@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.annotation.PostConstruct;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +17,8 @@ import com.mizhousoft.boot.authentication.AuthenticationService;
 import com.mizhousoft.boot.authentication.service.AccessControlService;
 import com.mizhousoft.boot.authentication.service.ApplicationAuthenticationService;
 import com.mizhousoft.boot.authentication.service.AuthenticationPathService;
+
+import jakarta.annotation.PostConstruct;
 
 /**
  * 认证服务

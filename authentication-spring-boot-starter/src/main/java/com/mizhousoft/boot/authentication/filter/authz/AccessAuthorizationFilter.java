@@ -3,10 +3,6 @@ package com.mizhousoft.boot.authentication.filter.authz;
 import java.io.IOException;
 import java.util.Set;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authz.RolesAuthorizationFilter;
@@ -17,6 +13,10 @@ import org.slf4j.LoggerFactory;
 import com.mizhousoft.boot.authentication.AuthenticationService;
 import com.mizhousoft.boot.authentication.util.BMCWebUtils;
 import com.mizhousoft.boot.authentication.util.ResponseBuilder;
+
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * 访问授权控制器

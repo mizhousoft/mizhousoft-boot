@@ -4,9 +4,6 @@ import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
@@ -29,6 +26,9 @@ import com.mizhousoft.boot.quartz.executor.IntervalJobExecutorImpl;
 import com.mizhousoft.boot.quartz.executor.OnceJobExecutorImpl;
 import com.mizhousoft.boot.quartz.factory.QuartzFactory;
 import com.mizhousoft.boot.quartz.protperties.QuartzThreadPoolProperties;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 
 /**
  * Quartz调度服务

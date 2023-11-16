@@ -3,11 +3,11 @@ package com.mizhousoft.boot.authentication.util;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
-
 import com.mizhousoft.boot.authentication.AccountDetails;
 import com.mizhousoft.commons.json.JSONException;
 import com.mizhousoft.commons.json.JSONUtils;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * 响应构建器

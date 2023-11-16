@@ -4,11 +4,6 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -29,6 +24,11 @@ import com.mizhousoft.boot.authentication.util.BMCWebUtils;
 import com.mizhousoft.boot.authentication.util.ResponseBuilder;
 import com.mizhousoft.commons.json.JSONException;
 import com.mizhousoft.commons.json.JSONUtils;
+
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * 帐号密码认证过滤器
