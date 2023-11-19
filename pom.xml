@@ -23,7 +23,6 @@
 
 	<modules>
 		<module>crypto-spring-boot-starter</module>
-		<module>restclient-spring-boot-starter</module>
 		<module>driver-spring-boot-starter</module>
 		<module>quartz-spring-boot-starter</module>
 		<module>authentication-spring-boot-starter</module>
