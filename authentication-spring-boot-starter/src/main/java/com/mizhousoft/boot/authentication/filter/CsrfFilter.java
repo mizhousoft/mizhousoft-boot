@@ -83,6 +83,12 @@ public class CsrfFilter extends OncePerRequestFilter
 		{
 			chain.doFilter(req, res);
 		}
+		else if (null == requestCsrfToken)
+		{
+			LOG.error("Request csrf token is null.");
+
+			ShiroUtils.logout(httpRequest, res, subject, loginUrl);
+		}
 		else
 		{
 			LOG.error("Request csrf token is invalid.");
