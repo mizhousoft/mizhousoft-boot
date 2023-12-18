@@ -11,14 +11,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mizhousoft.boot.authentication.SecurityConstants;
-import com.mizhousoft.boot.authentication.util.BMCWebUtils;
-import com.mizhousoft.boot.authentication.util.ResponseBuilder;
+import com.mizhousoft.boot.authentication.util.ShiroUtils;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
-import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Session认证过滤器
@@ -54,29 +52,7 @@ public class SessionAuthenticationFilter extends OncePerRequestFilter
 		boolean isAuthcSucceed = isSubjectAuthcSucceed(subject, request);
 		if (!isAuthcSucceed)
 		{
-			// 再次退出
-			try
-			{
-				subject.logout();
-			}
-			catch (Throwable e)
-			{
-				LOG.error("Subject logout failed.", e);
-			}
-
-			if (BMCWebUtils.isJSONRequest(request))
-			{
-				HttpServletResponse httpResp = WebUtils.toHttp(response);
-				httpResp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-
-				String respBody = ResponseBuilder.buildUnauthorized(httpResp.encodeRedirectURL(loginUrl), null);
-
-				httpResp.getWriter().write(respBody);
-			}
-			else
-			{
-				WebUtils.issueRedirect(request, response, loginUrl);
-			}
+			ShiroUtils.logout(request, response, subject, loginUrl);
 		}
 		else
 		{

@@ -6,7 +6,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.servlet.OncePerRequestFilter;
-import org.apache.shiro.web.util.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,14 +13,12 @@ import com.mizhousoft.boot.authentication.AccountAuthentication;
 import com.mizhousoft.boot.authentication.AccountDetails;
 import com.mizhousoft.boot.authentication.context.SecurityContextHolder;
 import com.mizhousoft.boot.authentication.context.SecurityContextImpl;
-import com.mizhousoft.boot.authentication.util.BMCWebUtils;
-import com.mizhousoft.boot.authentication.util.ResponseBuilder;
+import com.mizhousoft.boot.authentication.util.ShiroUtils;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
-import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * SecurityContext持久化过滤器
@@ -56,7 +53,7 @@ public class SecurityContextPersistenceFilter extends OncePerRequestFilter
 		if (!subject.isAuthenticated())
 		{
 			// 再次退出
-			logout(req, res, subject);
+			ShiroUtils.logout(req, res, subject, loginUrl);
 			return;
 		}
 
@@ -69,7 +66,7 @@ public class SecurityContextPersistenceFilter extends OncePerRequestFilter
 		else
 		{
 			// 再次退出
-			logout(req, res, subject);
+			ShiroUtils.logout(req, res, subject, loginUrl);
 			return;
 		}
 
@@ -83,7 +80,8 @@ public class SecurityContextPersistenceFilter extends OncePerRequestFilter
 		{
 			LOG.error("Account login ip address is {}, access ip address is {} now, force to logout.", accountDetails.getLoginIpAddr(),
 			        remoteIPAddress);
-			logout(req, res, subject);
+			ShiroUtils.logout(req, res, subject, loginUrl);
+
 			return;
 		}
 
@@ -103,41 +101,6 @@ public class SecurityContextPersistenceFilter extends OncePerRequestFilter
 		finally
 		{
 			SecurityContextHolder.clearContext();
-		}
-	}
-
-	/**
-	 * 退出
-	 * 
-	 * @param req
-	 * @param res
-	 * @param subject
-	 * @throws IOException
-	 */
-	private void logout(ServletRequest req, ServletResponse res, Subject subject) throws IOException
-	{
-		// 再次退出
-		try
-		{
-			subject.logout();
-		}
-		catch (Throwable e)
-		{
-			LOG.error("Subject logout failed.", e);
-		}
-
-		if (BMCWebUtils.isJSONRequest(req))
-		{
-			HttpServletResponse httpResp = WebUtils.toHttp(res);
-			httpResp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-
-			String respBody = ResponseBuilder.buildUnauthorized(httpResp.encodeRedirectURL(loginUrl), null);
-
-			httpResp.getWriter().write(respBody);
-		}
-		else
-		{
-			WebUtils.issueRedirect(req, res, loginUrl);
 		}
 	}
 

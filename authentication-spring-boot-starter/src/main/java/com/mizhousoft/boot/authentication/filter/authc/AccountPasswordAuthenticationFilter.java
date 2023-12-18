@@ -24,6 +24,7 @@ import com.mizhousoft.boot.authentication.util.BMCWebUtils;
 import com.mizhousoft.boot.authentication.util.ResponseBuilder;
 import com.mizhousoft.commons.json.JSONException;
 import com.mizhousoft.commons.json.JSONUtils;
+import com.mizhousoft.commons.web.util.CookieUtils;
 
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
@@ -116,8 +117,11 @@ public class AccountPasswordAuthenticationFilter extends FormAuthenticationFilte
 			        + "must be created in order to execute a login attempt.";
 			throw new IllegalStateException(msg);
 		}
+
 		try
 		{
+			CookieUtils.removeAll(WebUtils.toHttp(request), WebUtils.toHttp(response));
+
 			Subject subject = getSubject(request, response);
 
 			Session session = subject.getSession();
@@ -163,18 +167,22 @@ public class AccountPasswordAuthenticationFilter extends FormAuthenticationFilte
 	protected boolean onLoginSuccess(AuthenticationToken token, Subject subject, ServletRequest request, ServletResponse response)
 	        throws Exception
 	{
-		String userAgent = WebUtils.toHttp(request).getHeader(SecurityConstants.USER_AGENT_HEADER);
+		HttpServletRequest httpRequest = WebUtils.toHttp(request);
+
+		String userAgent = httpRequest.getHeader(SecurityConstants.USER_AGENT_HEADER);
 		subject.getSession().setAttribute(SecurityConstants.USER_AGENT_HEADER, userAgent);
 
 		Object principal = subject.getPrincipal();
-		if (principal instanceof AccountDetails)
+		if (principal instanceof AccountDetails accountDetails)
 		{
-			int timeout = ((AccountDetails) principal).getSessionIdleTimeout();
+			int timeout = accountDetails.getSessionIdleTimeout();
 
 			Session currentSessison = subject.getSession();
 			long maxIdleTimeInMillis = timeout * 60 * 1000;
 			currentSessison.setTimeout(maxIdleTimeInMillis);
-			WebUtils.toHttp(request).getSession().setMaxInactiveInterval(timeout * 60);
+			httpRequest.getSession().setMaxInactiveInterval(timeout * 60);
+
+			WebUtils.toHttp(response).addHeader(SecurityConstants.X_CSRF_TOKEN, accountDetails.getCsrfToken());
 		}
 
 		String host = com.mizhousoft.commons.web.util.WebUtils.getRemoteIPAddress(request);

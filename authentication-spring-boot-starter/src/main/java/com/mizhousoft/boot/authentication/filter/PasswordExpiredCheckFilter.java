@@ -5,19 +5,16 @@ import java.io.IOException;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.servlet.OncePerRequestFilter;
-import org.apache.shiro.web.util.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mizhousoft.boot.authentication.AccountDetails;
-import com.mizhousoft.boot.authentication.util.BMCWebUtils;
-import com.mizhousoft.boot.authentication.util.ResponseBuilder;
+import com.mizhousoft.boot.authentication.util.ShiroUtils;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
-import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * 密码过期检查过滤器
@@ -56,48 +53,13 @@ public class PasswordExpiredCheckFilter extends OncePerRequestFilter
 
 		if (credentialsExpired)
 		{
-			issueRedirect(subject, request, response);
+			LOG.error("Account password has expired, forced to exit the system.");
+
+			ShiroUtils.logout(request, response, subject, loginUrl);
 		}
 		else
 		{
 			chain.doFilter(request, response);
-		}
-	}
-
-	/**
-	 * 跳转到登录页面
-	 * 
-	 * @param subject
-	 * @param request
-	 * @param response
-	 * @throws IOException
-	 */
-	private void issueRedirect(Subject subject, ServletRequest request, ServletResponse response) throws IOException
-	{
-		LOG.error("Account password has expired, forced to exit the system.");
-
-		// 再次退出
-		try
-		{
-			subject.logout();
-		}
-		catch (Throwable e)
-		{
-			LOG.error("Subject logout failed.", e);
-		}
-
-		if (BMCWebUtils.isJSONRequest(request))
-		{
-			HttpServletResponse httpResp = WebUtils.toHttp(response);
-			httpResp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-
-			String respBody = ResponseBuilder.buildUnauthorized(httpResp.encodeRedirectURL(loginUrl), null);
-
-			httpResp.getWriter().write(respBody);
-		}
-		else
-		{
-			WebUtils.issueRedirect(request, response, loginUrl);
 		}
 	}
 

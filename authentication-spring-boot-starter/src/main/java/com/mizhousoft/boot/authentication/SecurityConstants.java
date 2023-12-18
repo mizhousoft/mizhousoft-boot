@@ -31,4 +31,14 @@ public interface SecurityConstants
 	 * 默认Session闲时超时时间
 	 */
 	int DEFAULT_SESSION_IDLE_TIMEOUT = 30;
+
+	/**
+	 * Referer
+	 */
+	String REFERER = "Referer";
+
+	/**
+	 * X-Csrf-Token
+	 */
+	String X_CSRF_TOKEN = "X-Csrf-Token";
 }

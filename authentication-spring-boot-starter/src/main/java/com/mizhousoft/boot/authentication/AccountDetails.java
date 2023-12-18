@@ -81,6 +81,13 @@ public interface AccountDetails extends Serializable
 	int getSessionIdleTimeout();
 
 	/**
+	 * 获取csrfToken
+	 * 
+	 * @return
+	 */
+	String getCsrfToken();
+
+	/**
 	 * 设置扩展属性
 	 * 
 	 * @param key

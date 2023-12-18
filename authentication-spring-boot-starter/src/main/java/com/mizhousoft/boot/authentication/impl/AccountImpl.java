@@ -49,6 +49,9 @@ public class AccountImpl implements AccountDetails
 	// Session闲时超时时间，单位是分钟
 	private int sessionIdleTimeout = SecurityConstants.DEFAULT_SESSION_IDLE_TIMEOUT;
 
+	// csrf-token
+	private String csrfToken;
+
 	// 扩展对象
 	private Map<String, Object> extendMap = new ConcurrentHashMap<>(10);
 
@@ -264,6 +267,27 @@ public class AccountImpl implements AccountDetails
 	public void setSessionIdleTimeout(int sessionIdleTimeout)
 	{
 		this.sessionIdleTimeout = sessionIdleTimeout;
+	}
+
+	/**
+	 * 获取csrfToken
+	 * 
+	 * @return
+	 */
+	@Override
+	public String getCsrfToken()
+	{
+		return csrfToken;
+	}
+
+	/**
+	 * 设置csrfToken
+	 * 
+	 * @param csrfToken
+	 */
+	public void setCsrfToken(String csrfToken)
+	{
+		this.csrfToken = csrfToken;
 	}
 
 	/**

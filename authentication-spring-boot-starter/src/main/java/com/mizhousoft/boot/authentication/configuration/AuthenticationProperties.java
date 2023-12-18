@@ -22,6 +22,11 @@ public class AuthenticationProperties
 	private boolean sessionMutex = true;
 
 	/**
+	 * referer domain
+	 */
+	private String referers;
+
+	/**
 	 * 获取verifyHost
 	 * 
 	 * @return
@@ -79,5 +84,25 @@ public class AuthenticationProperties
 	public void setSessionMutex(boolean sessionMutex)
 	{
 		this.sessionMutex = sessionMutex;
+	}
+
+	/**
+	 * 获取referers
+	 * 
+	 * @return
+	 */
+	public String getReferers()
+	{
+		return referers;
+	}
+
+	/**
+	 * 设置referers
+	 * 
+	 * @param referers
+	 */
+	public void setReferers(String referers)
+	{
+		this.referers = referers;
 	}
 }

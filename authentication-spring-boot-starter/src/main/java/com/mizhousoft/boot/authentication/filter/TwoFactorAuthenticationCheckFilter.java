@@ -10,15 +10,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mizhousoft.boot.authentication.AccountDetails;
-import com.mizhousoft.boot.authentication.util.BMCWebUtils;
-import com.mizhousoft.boot.authentication.util.ResponseBuilder;
+import com.mizhousoft.boot.authentication.util.ShiroUtils;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * 双因子认证检查过滤器
@@ -56,29 +54,7 @@ public class TwoFactorAuthenticationCheckFilter extends OncePerRequestFilter
 			LOG.error("{} has not passed two-factor authentication, request path is {}, force to logout.", accountDetails.getAccountName(),
 			        path);
 
-			// 再次退出
-			try
-			{
-				subject.logout();
-			}
-			catch (Throwable e)
-			{
-				LOG.error("Subject logout failed.", e);
-			}
-
-			if (BMCWebUtils.isJSONRequest(httpRequest))
-			{
-				HttpServletResponse httpResp = WebUtils.toHttp(response);
-				httpResp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-
-				String respBody = ResponseBuilder.buildUnauthorized(httpResp.encodeRedirectURL(loginUrl), null);
-
-				httpResp.getWriter().write(respBody);
-			}
-			else
-			{
-				WebUtils.issueRedirect(request, response, loginUrl);
-			}
+			ShiroUtils.logout(httpRequest, response, subject, loginUrl);
 		}
 		else
 		{

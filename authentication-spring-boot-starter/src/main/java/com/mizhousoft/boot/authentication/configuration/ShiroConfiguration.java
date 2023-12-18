@@ -1,7 +1,9 @@
 package com.mizhousoft.boot.authentication.configuration;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +12,8 @@ import org.apache.shiro.web.filter.authc.AnonymousFilter;
 import org.apache.shiro.web.filter.authc.LogoutFilter;
 import org.apache.shiro.web.filter.mgt.DefaultFilterChainManager;
 import org.apache.shiro.web.filter.mgt.PathMatchingFilterChainResolver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -17,8 +21,10 @@ import org.springframework.context.annotation.Configuration;
 
 import com.mizhousoft.boot.authentication.AccountSessionService;
 import com.mizhousoft.boot.authentication.AuthenticationService;
+import com.mizhousoft.boot.authentication.filter.CsrfFilter;
 import com.mizhousoft.boot.authentication.filter.FirstLoginCheckFilter;
 import com.mizhousoft.boot.authentication.filter.PasswordExpiredCheckFilter;
+import com.mizhousoft.boot.authentication.filter.RefererFilter;
 import com.mizhousoft.boot.authentication.filter.SecurityContextPersistenceFilter;
 import com.mizhousoft.boot.authentication.filter.SecurityFrameworkFilter;
 import com.mizhousoft.boot.authentication.filter.TwoFactorAuthenticationCheckFilter;
@@ -44,6 +50,8 @@ import jakarta.servlet.Filter;
 @Configuration
 public class ShiroConfiguration
 {
+	private static final Logger LOG = LoggerFactory.getLogger(ShiroConfiguration.class);
+
 	private static final String LOGIN_URL = "/login.action";
 
 	private static final String UNAUTHORIZED_URL = "/unauthorized.action";
@@ -154,7 +162,18 @@ public class ShiroConfiguration
 		TwoFactorAuthenticationCheckFilter twoFactorAuthcCheckFilter = new TwoFactorAuthenticationCheckFilter();
 		twoFactorAuthcCheckFilter.setLoginUrl(LOGIN_URL);
 
+		String referers = authenticationProperties.getReferers();
+		LOG.info("Application properties referers are {}.", referers);
+
+		List<String> refererList = Arrays.asList(referers.split(","));
+		RefererFilter refererFilter = new RefererFilter(LOGIN_URL, new HashSet<>(refererList));
+
+		List<String> excludePaths = new ArrayList<>(5);
+		excludePaths.add(LOGIN_URL);
+		CsrfFilter csrfFilter = new CsrfFilter(LOGIN_URL, excludePaths);
+
 		Map<String, Filter> filters = new HashMap<String, Filter>(10);
+		filters.put("refererFilter", refererFilter);
 		filters.put("anon", anonFilter);
 		filters.put("logout", logoutFilter);
 		filters.put("authc", accountAuthenticationFilter);
@@ -164,6 +183,7 @@ public class ShiroConfiguration
 		filters.put("firstLoginCheckFilter", firstLoginFilter);
 		filters.put("passwordExpiredCheckFilter", passwordExpiredCheckFilter);
 		filters.put("twoFactorAuthcCheckFilter", twoFactorAuthcCheckFilter);
+		filters.put("csrfFilter", csrfFilter);
 		filterChain.setFilters(filters);
 
 		buildFilterChainManager(filterChain);
@@ -185,9 +205,11 @@ public class ShiroConfiguration
 		List<String> authzPaths = authenticationService.getAuthzRequestPaths();
 		for (String authzPath : authzPaths)
 		{
+			filterChain.addToChain(authzPath, "refererFilter");
 			filterChain.addToChain(authzPath, "authc");
 			filterChain.addToChain(authzPath, "authz");
 			filterChain.addToChain(authzPath, "securityContextFilter");
+			filterChain.addToChain(authzPath, "csrfFilter");
 			filterChain.addToChain(authzPath, "sessionAuthc");
 			filterChain.addToChain(authzPath, "firstLoginCheckFilter");
 			filterChain.addToChain(authzPath, "passwordExpiredCheckFilter");
@@ -201,8 +223,10 @@ public class ShiroConfiguration
 		List<String> authcPaths = authenticationService.getAuthcRequestPaths();
 		for (String authcPath : authcPaths)
 		{
+			filterChain.addToChain(authcPath, "refererFilter");
 			filterChain.addToChain(authcPath, "authc");
 			filterChain.addToChain(authcPath, "securityContextFilter");
+			filterChain.addToChain(authcPath, "csrfFilter");
 			filterChain.addToChain(authcPath, "sessionAuthc");
 			filterChain.addToChain(authcPath, "firstLoginCheckFilter");
 			filterChain.addToChain(authcPath, "passwordExpiredCheckFilter");
@@ -216,19 +240,27 @@ public class ShiroConfiguration
 		List<String> onlyAuthcPaths = authenticationService.getLoginAuditRequestPaths();
 		for (String onlyAuthcPath : onlyAuthcPaths)
 		{
+			filterChain.addToChain(onlyAuthcPath, "refererFilter");
 			filterChain.addToChain(onlyAuthcPath, "authc");
 			filterChain.addToChain(onlyAuthcPath, "securityContextFilter");
+			filterChain.addToChain(onlyAuthcPath, "csrfFilter");
 			filterChain.addToChain(onlyAuthcPath, "sessionAuthc");
 		}
 
+		filterChain.addToChain(LOGIN_URL, "refererFilter");
 		filterChain.addToChain(LOGIN_URL, "authc");
 
+		filterChain.addToChain(LOGOUT_URL, "refererFilter");
 		filterChain.addToChain(LOGOUT_URL, "authc");
+		filterChain.addToChain(LOGOUT_URL, "securityContextFilter");
+		filterChain.addToChain(LOGOUT_URL, "csrfFilter");
 		filterChain.addToChain(LOGOUT_URL, "logout");
 
+		filterChain.addToChain("/**", "refererFilter");
 		filterChain.addToChain("/**", "authc");
 		filterChain.addToChain("/**", "authz");
 		filterChain.addToChain("/**", "securityContextFilter");
+		filterChain.addToChain("/**", "csrfFilter");
 		filterChain.addToChain("/**", "sessionAuthc");
 		filterChain.addToChain("/**", "firstLoginCheckFilter");
 		filterChain.addToChain("/**", "passwordExpiredCheckFilter");
