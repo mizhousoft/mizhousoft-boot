@@ -5,6 +5,7 @@ import org.apache.shiro.web.util.WebUtils;
 
 import com.mizhousoft.boot.authentication.util.BMCWebUtils;
 import com.mizhousoft.boot.authentication.util.ResponseBuilder;
+import com.mizhousoft.commons.web.util.CookieUtils;
 
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
@@ -27,9 +28,12 @@ public class CustLogoutFilter extends LogoutFilter
 	 */
 	protected void issueRedirect(ServletRequest request, ServletResponse response, String redirectUrl) throws Exception
 	{
+		HttpServletResponse httpResp = WebUtils.toHttp(response);
+
+		CookieUtils.removeAll(WebUtils.toHttp(request), httpResp);
+
 		if (BMCWebUtils.isJSONRequest(request))
 		{
-			HttpServletResponse httpResp = WebUtils.toHttp(response);
 			httpResp.setStatus(HttpServletResponse.SC_OK);
 
 			String respBody = ResponseBuilder.buildSucceed(httpResp.encodeRedirectURL(redirectUrl));

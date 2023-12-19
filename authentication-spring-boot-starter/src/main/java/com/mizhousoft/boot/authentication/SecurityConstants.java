@@ -38,6 +38,11 @@ public interface SecurityConstants
 	String REFERER = "Referer";
 
 	/**
+	 * csrf-token
+	 */
+	String CSRF_TOKEN = "csrf-token";
+
+	/**
 	 * X-Csrf-Token
 	 */
 	String X_CSRF_TOKEN = "X-Csrf-Token";

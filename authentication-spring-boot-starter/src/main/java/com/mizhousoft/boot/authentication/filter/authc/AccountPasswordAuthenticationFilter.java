@@ -20,6 +20,7 @@ import com.mizhousoft.boot.authentication.AccountDetails;
 import com.mizhousoft.boot.authentication.SecurityConstants;
 import com.mizhousoft.boot.authentication.authc.AuthenticationRequest;
 import com.mizhousoft.boot.authentication.authc.UnionAuthenticationToken;
+import com.mizhousoft.boot.authentication.servlet.TokenCookie;
 import com.mizhousoft.boot.authentication.util.BMCWebUtils;
 import com.mizhousoft.boot.authentication.util.ResponseBuilder;
 import com.mizhousoft.commons.json.JSONException;
@@ -182,7 +183,11 @@ public class AccountPasswordAuthenticationFilter extends FormAuthenticationFilte
 			currentSessison.setTimeout(maxIdleTimeInMillis);
 			httpRequest.getSession().setMaxInactiveInterval(timeout * 60);
 
-			WebUtils.toHttp(response).addHeader(SecurityConstants.X_CSRF_TOKEN, accountDetails.getCsrfToken());
+			TokenCookie cookie = new TokenCookie(SecurityConstants.CSRF_TOKEN);
+			cookie.setValue(accountDetails.getCsrfToken());
+			cookie.setSecure(true);
+			cookie.setHttpOnly(false);
+			cookie.saveTo(httpRequest, WebUtils.toHttp(response));
 		}
 
 		String host = com.mizhousoft.commons.web.util.WebUtils.getRemoteIPAddress(request);
