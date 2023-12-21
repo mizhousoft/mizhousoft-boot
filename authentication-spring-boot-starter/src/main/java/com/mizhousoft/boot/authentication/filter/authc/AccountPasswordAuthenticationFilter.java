@@ -52,6 +52,22 @@ public class AccountPasswordAuthenticationFilter extends FormAuthenticationFilte
 	}
 
 	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void postHandle(ServletRequest request, ServletResponse response) throws Exception
+	{
+		super.postHandle(request, response);
+
+		// 清除所有的cookie，保证前端获取不到
+		Subject subject = getSubject(request, response);
+		if (!subject.isAuthenticated() || null == subject.getPrincipal())
+		{
+			CookieUtils.removeAll(WebUtils.toHttp(request), WebUtils.toHttp(response));
+		}
+	}
+
+	/**
 	 * 创建AuthenticationToken
 	 * 
 	 * @param request
