@@ -36,6 +36,7 @@ import com.mizhousoft.boot.authentication.impl.AccountSessionServiceImpl;
 import com.mizhousoft.boot.authentication.mgt.DefaultWebSecurityManager;
 import com.mizhousoft.boot.authentication.realm.AuthenticationRealm;
 import com.mizhousoft.boot.authentication.service.AccountAuthcService;
+import com.mizhousoft.boot.authentication.service.ApplicationAuthenticationService;
 import com.mizhousoft.boot.authentication.session.SecureSessionDAO;
 import com.mizhousoft.boot.authentication.session.SecureSessionFactory;
 import com.mizhousoft.boot.authentication.session.SecureWebSessionManager;
@@ -63,6 +64,9 @@ public class ShiroConfiguration
 
 	@Autowired
 	private AuthenticationService authenticationService;
+
+	@Autowired
+	private ApplicationAuthenticationService applicationAuthService;
 
 	@Bean
 	public SecureSessionDAO getSecureSessionDAO()
@@ -168,9 +172,9 @@ public class ShiroConfiguration
 		List<String> refererList = Arrays.asList(referers.split(","));
 		RefererFilter refererFilter = new RefererFilter(LOGIN_URL, new HashSet<>(refererList));
 
-		List<String> excludePaths = new ArrayList<>(5);
-		excludePaths.add(LOGIN_URL);
-		CsrfFilter csrfFilter = new CsrfFilter(LOGIN_URL, excludePaths);
+		List<String> csrfExcludePaths = applicationAuthService.getCsrfExcludeRequestPaths();
+		csrfExcludePaths.add(LOGIN_URL);
+		CsrfFilter csrfFilter = new CsrfFilter(LOGIN_URL, csrfExcludePaths);
 
 		Map<String, Filter> filters = new HashMap<String, Filter>(10);
 		filters.put("refererFilter", refererFilter);

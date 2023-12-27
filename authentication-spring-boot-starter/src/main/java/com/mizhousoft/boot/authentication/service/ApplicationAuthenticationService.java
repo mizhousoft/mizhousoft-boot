@@ -36,4 +36,14 @@ public interface ApplicationAuthenticationService
 	{
 		return new ArrayList<>(0);
 	}
+
+	/**
+	 * 获取CSRF校验排除路径
+	 * 
+	 * @return
+	 */
+	default List<String> getCsrfExcludeRequestPaths()
+	{
+		return new ArrayList<>(0);
+	}
 }
