@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -67,6 +68,9 @@ public class ShiroConfiguration
 
 	@Autowired
 	private ApplicationAuthenticationService applicationAuthService;
+
+	@Autowired
+	private ApplicationEventPublisher eventPublisher;
 
 	@Bean
 	public SecureSessionDAO getSecureSessionDAO()
@@ -139,7 +143,7 @@ public class ShiroConfiguration
 		sessionAuthenticationFilter.setLoginUrl(LOGIN_URL);
 		sessionAuthenticationFilter.setVerifyHost(authenticationProperties.isVerifyHost());
 
-		LogoutFilter logoutFilter = new CustLogoutFilter();
+		LogoutFilter logoutFilter = new CustLogoutFilter(eventPublisher);
 		logoutFilter.setRedirectUrl(LOGIN_URL);
 
 		AccountPasswordAuthenticationFilter accountAuthenticationFilter = new AccountPasswordAuthenticationFilter();
