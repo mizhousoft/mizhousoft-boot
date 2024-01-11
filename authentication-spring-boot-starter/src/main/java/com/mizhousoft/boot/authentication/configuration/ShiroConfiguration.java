@@ -34,6 +34,8 @@ import com.mizhousoft.boot.authentication.filter.authc.CustLogoutFilter;
 import com.mizhousoft.boot.authentication.filter.authc.SessionAuthenticationFilter;
 import com.mizhousoft.boot.authentication.filter.authz.AccessAuthorizationFilter;
 import com.mizhousoft.boot.authentication.impl.AccountSessionServiceImpl;
+import com.mizhousoft.boot.authentication.limiter.AuthFailureLimiter;
+import com.mizhousoft.boot.authentication.limiter.impl.IPAddrAuthFailureLimiter;
 import com.mizhousoft.boot.authentication.mgt.DefaultWebSecurityManager;
 import com.mizhousoft.boot.authentication.realm.AuthenticationRealm;
 import com.mizhousoft.boot.authentication.service.AccountAuthcService;
@@ -71,6 +73,8 @@ public class ShiroConfiguration
 
 	@Autowired
 	private ApplicationEventPublisher eventPublisher;
+
+	private AuthFailureLimiter authFailureLimiter = new IPAddrAuthFailureLimiter(30);
 
 	@Bean
 	public SecureSessionDAO getSecureSessionDAO()
@@ -116,7 +120,7 @@ public class ShiroConfiguration
 	@Bean
 	public AuthenticationRealm getAuthenticationRealm(AccountAuthcService accountAuthcService, AccountSessionService accountSessionService)
 	{
-		AuthenticationRealm authenticationRealm = new AuthenticationRealm(accountAuthcService, accountSessionService,
+		AuthenticationRealm authenticationRealm = new AuthenticationRealm(accountAuthcService, accountSessionService, authFailureLimiter,
 		        authenticationProperties);
 
 		return authenticationRealm;

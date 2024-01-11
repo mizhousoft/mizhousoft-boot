@@ -25,6 +25,7 @@ import com.mizhousoft.boot.authentication.GrantedAuthority;
 import com.mizhousoft.boot.authentication.authc.UnionAuthenticationToken;
 import com.mizhousoft.boot.authentication.configuration.AuthenticationProperties;
 import com.mizhousoft.boot.authentication.exception.BadCredentialsException;
+import com.mizhousoft.boot.authentication.limiter.AuthFailureLimiter;
 import com.mizhousoft.boot.authentication.service.AccountAuthcService;
 
 /**
@@ -39,8 +40,11 @@ public class AuthenticationRealm extends AuthorizingRealm
 	// 帐号服务
 	private AccountAuthcService accountAuthcService;
 
-	// 帐号Sessionf服务
+	// 帐号Session服务
 	private AccountSessionService accountSessionService;
+
+	// AuthFailureLimiter
+	private AuthFailureLimiter authFailureLimiter;
 
 	// 配置
 	private AuthenticationProperties authenticationProperties;
@@ -50,14 +54,16 @@ public class AuthenticationRealm extends AuthorizingRealm
 	 *
 	 * @param accountAuthcService
 	 * @param accountSessionService
+	 * @param authFailureLimiter
 	 * @param authenticationProperties
 	 */
 	public AuthenticationRealm(AccountAuthcService accountAuthcService, AccountSessionService accountSessionService,
-	        AuthenticationProperties authenticationProperties)
+	        AuthFailureLimiter authFailureLimiter, AuthenticationProperties authenticationProperties)
 	{
 		super();
 		this.accountAuthcService = accountAuthcService;
 		this.accountSessionService = accountSessionService;
+		this.authFailureLimiter = authFailureLimiter;
 		this.authenticationProperties = authenticationProperties;
 	}
 
@@ -104,6 +110,8 @@ public class AuthenticationRealm extends AuthorizingRealm
 
 		try
 		{
+			authFailureLimiter.tryAcquire(upToken.getHost());
+
 			AccountDetails accountDetails = null;
 			if (null != passwd)
 			{
@@ -118,6 +126,8 @@ public class AuthenticationRealm extends AuthorizingRealm
 				throw new BadCredentialsException("Authentication token is wrong.");
 			}
 
+			authFailureLimiter.clear(upToken.getHost());
+
 			if (authenticationProperties.isSessionMutex())
 			{
 				accountSessionService.logoffAccount(accountDetails.getAccountId());
@@ -129,6 +139,8 @@ public class AuthenticationRealm extends AuthorizingRealm
 		catch (com.mizhousoft.boot.authentication.exception.AuthenticationException e)
 		{
 			LOG.error("Account authenticate failed, message: {}", e.getMessage());
+
+			authFailureLimiter.authcFailure(upToken.getHost());
 
 			if (e instanceof com.mizhousoft.boot.authentication.exception.AccountDisabledException)
 			{
