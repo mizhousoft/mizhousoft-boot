@@ -28,6 +28,16 @@ public interface ApplicationAuthenticationService
 	}
 
 	/**
+	 * 获取匿名请求路径
+	 * 
+	 * @return
+	 */
+	default List<String> getAnonRequestPaths()
+	{
+		return new ArrayList<>(0);
+	}
+
+	/**
 	 * 获取不更新访问时间的请求路径
 	 * 
 	 * @return

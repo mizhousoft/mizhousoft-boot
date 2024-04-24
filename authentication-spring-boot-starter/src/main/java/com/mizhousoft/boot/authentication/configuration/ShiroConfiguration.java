@@ -180,8 +180,10 @@ public class ShiroConfiguration
 		List<String> refererList = Arrays.asList(referers.split(","));
 		RefererFilter refererFilter = new RefererFilter(LOGIN_URL, new HashSet<>(refererList));
 
+		List<String> anonRequestPaths = applicationAuthService.getAnonRequestPaths();
 		List<String> csrfExcludePaths = applicationAuthService.getCsrfExcludeRequestPaths();
 		csrfExcludePaths.add(LOGIN_URL);
+		csrfExcludePaths.addAll(anonRequestPaths);
 		CsrfFilter csrfFilter = new CsrfFilter(LOGIN_URL, csrfExcludePaths);
 
 		Map<String, Filter> filters = new HashMap<String, Filter>(10);
@@ -267,6 +269,12 @@ public class ShiroConfiguration
 		filterChain.addToChain(LOGOUT_URL, "securityContextFilter");
 		filterChain.addToChain(LOGOUT_URL, "csrfFilter");
 		filterChain.addToChain(LOGOUT_URL, "logout");
+
+		List<String> anonRequestPaths = applicationAuthService.getAnonRequestPaths();
+		for (String anonRequestPath : anonRequestPaths)
+		{
+			filterChain.addToChain(anonRequestPath, "anon");
+		}
 
 		filterChain.addToChain("/**", "refererFilter");
 		filterChain.addToChain("/**", "authc");
