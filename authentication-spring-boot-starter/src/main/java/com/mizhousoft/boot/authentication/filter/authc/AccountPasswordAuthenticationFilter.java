@@ -42,6 +42,22 @@ public class AccountPasswordAuthenticationFilter extends FormAuthenticationFilte
 	private static final Logger LOG = LoggerFactory.getLogger(AccountPasswordAuthenticationFilter.class);
 
 	/**
+	 * 是否安全模式
+	 */
+	private boolean secureMode;
+
+	/**
+	 * 构造函数
+	 *
+	 * @param secureMode
+	 */
+	public AccountPasswordAuthenticationFilter(boolean secureMode)
+	{
+		super();
+		this.secureMode = secureMode;
+	}
+
+	/**
 	 * 保存请求
 	 * 
 	 * @param request
@@ -201,7 +217,7 @@ public class AccountPasswordAuthenticationFilter extends FormAuthenticationFilte
 
 			TokenCookie cookie = new TokenCookie(SecurityConstants.CSRF_TOKEN);
 			cookie.setValue(accountDetails.getCsrfToken());
-			cookie.setSecure(true);
+			cookie.setSecure(secureMode);
 			cookie.setHttpOnly(false);
 			cookie.saveTo(httpRequest, WebUtils.toHttp(response));
 		}

@@ -26,6 +26,22 @@ public class SecureWebSessionManager extends DefaultWebSessionManager
 	private static final Logger log = LoggerFactory.getLogger(SecureWebSessionManager.class);
 
 	/**
+	 * 是否安全模式
+	 */
+	private boolean secureMode;
+
+	/**
+	 * 构造函数
+	 *
+	 * @param secureMode
+	 */
+	public SecureWebSessionManager(boolean secureMode)
+	{
+		super();
+		this.secureMode = secureMode;
+	}
+
+	/**
 	 * 启动会话
 	 * 
 	 * @param session
@@ -75,7 +91,7 @@ public class SecureWebSessionManager extends DefaultWebSessionManager
 		}
 
 		Cookie template = getSessionIdCookie();
-		template.setSecure(true);
+		template.setSecure(secureMode);
 
 		Cookie cookie = new SecureCookie(template);
 		String idString = currentId.toString();

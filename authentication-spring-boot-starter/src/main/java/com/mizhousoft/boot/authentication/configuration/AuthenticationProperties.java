@@ -27,6 +27,11 @@ public class AuthenticationProperties
 	private String referers;
 
 	/**
+	 * 是否安全模式
+	 */
+	private boolean secureMode = true;
+
+	/**
 	 * 获取verifyHost
 	 * 
 	 * @return
@@ -104,5 +109,25 @@ public class AuthenticationProperties
 	public void setReferers(String referers)
 	{
 		this.referers = referers;
+	}
+
+	/**
+	 * 获取secureMode
+	 * 
+	 * @return
+	 */
+	public boolean isSecureMode()
+	{
+		return secureMode;
+	}
+
+	/**
+	 * 设置secureMode
+	 * 
+	 * @param secureMode
+	 */
+	public void setSecureMode(boolean secureMode)
+	{
+		this.secureMode = secureMode;
 	}
 }

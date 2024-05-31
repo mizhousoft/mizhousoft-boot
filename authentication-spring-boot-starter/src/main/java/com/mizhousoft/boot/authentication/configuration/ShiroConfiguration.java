@@ -93,7 +93,7 @@ public class ShiroConfiguration
 	@Bean(destroyMethod = "destroy")
 	public SecureWebSessionManager getSecureWebSessionManager(SecureSessionDAO sessionDAO, SecureSessionFactory sessionFactory)
 	{
-		SecureWebSessionManager sessionManager = new SecureWebSessionManager();
+		SecureWebSessionManager sessionManager = new SecureWebSessionManager(authenticationProperties.isSecureMode());
 		sessionManager.setSessionIdCookieEnabled(true);
 		sessionManager.setSessionDAO(sessionDAO);
 		sessionManager.setSessionFactory(sessionFactory);
@@ -150,7 +150,8 @@ public class ShiroConfiguration
 		LogoutFilter logoutFilter = new CustLogoutFilter(eventPublisher);
 		logoutFilter.setRedirectUrl(LOGIN_URL);
 
-		AccountPasswordAuthenticationFilter accountAuthenticationFilter = new AccountPasswordAuthenticationFilter();
+		AccountPasswordAuthenticationFilter accountAuthenticationFilter = new AccountPasswordAuthenticationFilter(
+		        authenticationProperties.isSecureMode());
 		accountAuthenticationFilter.setLoginUrl(LOGIN_URL);
 		accountAuthenticationFilter.setSuccessUrl("/");
 
