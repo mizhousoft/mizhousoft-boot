@@ -38,7 +38,7 @@ public final class RootSecretKeyGenerator
 	{
 		try
 		{
-			byte[] passBytes = generatePasswd(passSegment, fixedBytesProvider);
+			char[] passBytes = generatePasswd(passSegment, fixedBytesProvider);
 			byte[] saltBytes = HexUtils.decodeHex(salt);
 			byte[] rootKey = PBESecretKeyGenerator.deriveKey(size, passBytes, saltBytes);
 
@@ -56,8 +56,7 @@ public final class RootSecretKeyGenerator
 	 * @return
 	 * @throws CryptoException
 	 */
-	private static byte[] generatePasswd(String passSegment, FixedBytesProvider fixedBytesProvider)
-	        throws CryptoException
+	private static char[] generatePasswd(String passSegment, FixedBytesProvider fixedBytesProvider) throws CryptoException
 	{
 		byte[] fixedBytes = fixedBytesProvider.getFixedBytes();
 		if (null == fixedBytes)
@@ -79,7 +78,9 @@ public final class RootSecretKeyGenerator
 				bytes[i] = (byte) (passBytes[i] ^ fixedBytes[i]);
 			}
 
-			return bytes;
+			String value = HexUtils.encodeHexString(bytes, true);
+
+			return value.toCharArray();
 		}
 		catch (DecoderException e)
 		{
