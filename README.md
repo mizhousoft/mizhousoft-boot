@@ -5,7 +5,7 @@ Boot SDK
 
 1.  只更新父模块的版本号;
 	```shell
-	mvn versions:set -DnewVersion=2.0.0-SNAPSHOT
+	mvn versions:set -DnewVersion=2.0.1-SNAPSHOT
 	```
 2.  更新子模块和父模块一样的版本号;
 	```shell
@@ -24,13 +24,9 @@ Boot SDK
 
 3. 修改 commons.version 版本号； 
 
-4. 修改 cloud.sdk.version 版本号； 
+4. 修改 mizhousoft.boot.version 版本号； 
 
-5. 修改 mizhousoft.boot.version 版本号； 
-
-6. 修改 push.version 版本号； 
-
-7. 执行命令
+5. 执行命令
 	```shell
 	mvn clean deploy -Possrh
 	```
