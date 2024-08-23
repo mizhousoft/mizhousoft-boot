@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.mizhousoft.boot</groupId>
 		<artifactId>mizhousoft-boot</artifactId>
-		<version>2.0.1</version>
+		<version>2.0.2-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>authentication-spring-boot-starter</artifactId>
