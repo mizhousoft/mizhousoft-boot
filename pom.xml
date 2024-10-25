@@ -6,19 +6,19 @@
 	<parent>
 		<groupId>com.mizhousoft</groupId>
 		<artifactId>mizhousoft-bom</artifactId>
-		<version>2.0.3-SNAPSHOT</version>
+		<version>2.0.3</version>
 	</parent>
 
 	<groupId>com.mizhousoft.boot</groupId>
 	<artifactId>mizhousoft-boot</artifactId>
-	<version>2.0.3-SNAPSHOT</version>
+	<version>2.0.3</version>
 	<packaging>pom</packaging>
 	<name>mizhousoft-boot</name>
 	<description>Mizhousoft Boot</description>
 
 	<properties>
-		<commons.version>2.0.3-SNAPSHOT</commons.version>
-		<mizhousoft.boot.version>2.0.3-SNAPSHOT</mizhousoft.boot.version>
+		<commons.version>2.0.3</commons.version>
+		<mizhousoft.boot.version>2.0.3</mizhousoft.boot.version>
 	</properties>
 
 	<modules>
