@@ -102,7 +102,6 @@ public class ShiroConfiguration
 		sessionManager.setSessionValidationSchedulerEnabled(true);
 
 		ExecutorServiceSessionValidationScheduler sessionValidationScheduler = new ExecutorServiceSessionValidationScheduler();
-		sessionValidationScheduler.setInterval(1800000);
 		sessionValidationScheduler.setSessionManager(sessionManager);
 		sessionManager.setSessionValidationScheduler(sessionValidationScheduler);
 

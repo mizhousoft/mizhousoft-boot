@@ -3,7 +3,7 @@ package com.mizhousoft.boot.authentication.filter.authz;
 import java.io.IOException;
 import java.util.Set;
 
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authz.RolesAuthorizationFilter;
 import org.apache.shiro.web.util.WebUtils;

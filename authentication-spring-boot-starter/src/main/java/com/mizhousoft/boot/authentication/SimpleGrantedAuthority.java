@@ -1,6 +1,6 @@
 package com.mizhousoft.boot.authentication;
 
-import org.apache.shiro.util.Assert;
+import org.apache.shiro.lang.util.Assert;
 
 /**
  * 授权
