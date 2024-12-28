@@ -2,12 +2,12 @@ package com.mizhousoft.boot.crypto.env;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.commons.collections4.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,7 +86,7 @@ public final class EncryptableEnvironmentPostProcessor implements EnvironmentPos
 
 		Map<String, Object> sourceMap = mapPropertySource.getSource();
 
-		Map<String, Object> destMap = new HashedMap<>(sourceMap);
+		Map<String, Object> destMap = new HashMap<>(sourceMap);
 		OriginTrackedMapPropertySource newPropertySource = new OriginTrackedMapPropertySource(mapPropertySource.getName(), destMap);
 
 		Iterator<Entry<String, Object>> iter = destMap.entrySet().iterator();
