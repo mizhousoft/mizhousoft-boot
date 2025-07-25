@@ -7,15 +7,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.codec.DecoderException;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mizhousoft.commons.crypto.AESEncryptor;
-import com.mizhousoft.commons.crypto.CryptoException;
-import com.mizhousoft.commons.crypto.digest.HmacSHA256Digest;
-import com.mizhousoft.commons.lang.CharEncoding;
-import com.mizhousoft.commons.lang.HexUtils;
 import com.mizhousoft.boot.crypto.SecretManager;
 import com.mizhousoft.boot.crypto.descriptor.RootSecretDescriptor;
 import com.mizhousoft.boot.crypto.descriptor.WorkSecretDescriptor;
@@ -23,6 +18,11 @@ import com.mizhousoft.boot.crypto.domain.WorkSecret;
 import com.mizhousoft.boot.crypto.generator.RootSecretGenerator;
 import com.mizhousoft.boot.crypto.loader.RootSecretDescriptorLoader;
 import com.mizhousoft.boot.crypto.loader.WorkSecretDescriptorLoader;
+import com.mizhousoft.commons.crypto.AESEncryptor;
+import com.mizhousoft.commons.crypto.CryptoException;
+import com.mizhousoft.commons.crypto.digest.HmacSHA256Digest;
+import com.mizhousoft.commons.lang.CharEncoding;
+import com.mizhousoft.commons.lang.HexUtils;
 
 /**
  * 秘钥管理器
@@ -94,7 +94,7 @@ class SecretManagerImpl implements SecretManager
 				String macText = HexUtils.encodeHexString(macBytes, false);
 
 				String sign = workDescriptor.getSign();
-				if (!StringUtils.equals(sign, macText))
+				if (!Strings.CS.equals(sign, macText))
 				{
 					throw new CryptoException(workKeyId + " secret is wrong.");
 				}

@@ -3,6 +3,7 @@ package com.mizhousoft.boot.authentication.filter;
 import java.io.IOException;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.servlet.OncePerRequestFilter;
@@ -76,7 +77,7 @@ public class SecurityContextPersistenceFilter extends OncePerRequestFilter
 			remoteIPAddress = subject.getSession().getHost();
 		}
 
-		if (checkAccessIpAddr && !StringUtils.equals(accountDetails.getLoginIpAddr(), remoteIPAddress))
+		if (checkAccessIpAddr && !Strings.CS.equals(accountDetails.getLoginIpAddr(), remoteIPAddress))
 		{
 			LOG.error("Account login ip address is {}, access ip address is {} now, force to logout.", accountDetails.getLoginIpAddr(),
 			        remoteIPAddress);

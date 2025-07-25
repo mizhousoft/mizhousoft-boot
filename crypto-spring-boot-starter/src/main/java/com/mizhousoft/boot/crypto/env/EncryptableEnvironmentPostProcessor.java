@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -163,7 +164,7 @@ public final class EncryptableEnvironmentPostProcessor implements EnvironmentPos
 	private String getSecretPath(String secretId, PropertySource<?> propertySource)
 	{
 		String rootPath = (String) propertySource.getProperty(secretId);
-		if (StringUtils.startsWith(rootPath, CLASSPATH_PREFIX))
+		if (Strings.CS.startsWith(rootPath, CLASSPATH_PREFIX))
 		{
 			rootPath = rootPath.substring(CLASSPATH_PREFIX.length());
 
@@ -183,7 +184,7 @@ public final class EncryptableEnvironmentPostProcessor implements EnvironmentPos
 
 	private boolean isEncryptString(String data)
 	{
-		return StringUtils.startsWith(data, ENCRYPT_PREFIX);
+		return Strings.CS.startsWith(data, ENCRYPT_PREFIX);
 	}
 
 	private String getEncryptString(String data)
