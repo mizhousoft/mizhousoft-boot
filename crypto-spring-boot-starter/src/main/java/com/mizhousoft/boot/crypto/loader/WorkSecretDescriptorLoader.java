@@ -7,12 +7,13 @@ import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.mizhousoft.boot.crypto.descriptor.WorkSecretDescriptor;
 import com.mizhousoft.commons.crypto.CryptoException;
 import com.mizhousoft.commons.json.JSONException;
 import com.mizhousoft.commons.json.JSONUtils;
 import com.mizhousoft.commons.lang.CharEncoding;
+
+import tools.jackson.core.type.TypeReference;
 
 /**
  * 工作密钥描述符加载器
