@@ -76,17 +76,10 @@ public class SecureSessionFactory implements SessionFactory
 			}
 		}
 
-		SimpleSession session = new SimpleSession();
-		session.setId(sessionId);
+		String host = initData != null ? initData.getHost() : null;
 
-		if (initData != null)
-		{
-			String host = initData.getHost();
-			if (host != null)
-			{
-				session.setHost(host);
-			}
-		}
+		SimpleSession session = new SimpleSession(host);
+		session.setId(sessionId);
 
 		return session;
 	}

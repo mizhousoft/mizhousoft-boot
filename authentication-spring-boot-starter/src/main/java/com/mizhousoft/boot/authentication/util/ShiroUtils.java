@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.shiro.session.Session;
-import org.apache.shiro.subject.SimplePrincipalCollection;
+import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.subject.support.DefaultSubjectContext;
 import org.apache.shiro.web.util.WebUtils;
@@ -58,13 +58,14 @@ public abstract class ShiroUtils
 	 */
 	public static AccountDetails getAccountDetails(Session session)
 	{
-		Object simplePrincipalCollection = session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
-		if (simplePrincipalCollection instanceof SimplePrincipalCollection)
+		Object principalsObj = session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
+
+		if (principalsObj instanceof PrincipalCollection)
 		{
-			Object primaryPrincipal = ((SimplePrincipalCollection) simplePrincipalCollection).getPrimaryPrincipal();
+			Object primaryPrincipal = ((PrincipalCollection) principalsObj).getPrimaryPrincipal();
 			if (primaryPrincipal instanceof AccountDetails)
 			{
-				return ((AccountDetails) primaryPrincipal);
+				return (AccountDetails) primaryPrincipal;
 			}
 			else
 			{
@@ -73,7 +74,7 @@ public abstract class ShiroUtils
 		}
 		else
 		{
-			LOG.error("Session PRINCIPALS_SESSION_KEY object is not SimplePrincipalCollection.");
+			LOG.error("Session PRINCIPALS_SESSION_KEY object is not PrincipalCollection.");
 		}
 
 		return null;
